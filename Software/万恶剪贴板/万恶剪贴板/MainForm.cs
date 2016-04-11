@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.Linq;
 using System.Net;
-using System.Drawing;
 using System.Drawing.Imaging;
 
 namespace 剪贴板
@@ -42,7 +39,7 @@ namespace 剪贴板
         }
 
         /// <summary>
-        /// 剪贴板写入处理过的内容
+        /// 生成页面
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -61,24 +58,28 @@ namespace 剪贴板
         }
 
         /// <summary>
-        /// 读取剪贴板并保存剪贴板内容
+        /// 导出图片
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnImg_Click(object sender, EventArgs e)
         {
+            var imgObj = Clipboard.GetImage();
             var dataStr = GetHtmlStr();
-            var imgObj = GetImgObj();
-            if (!string.IsNullOrEmpty(dataStr))
-            {
-                int i = 0;
-                MessageBox.Show(string.Format("成功提取{0}个图片", DownloadImg(dataStr, i)), "逆天友情提醒");
-            }
-            else if (imgObj != null)//非HTML的单张图片
+            if (imgObj != null)//非HTML的单张图片
             {
                 CreateDirectory("Images");
                 imgObj.Save(string.Format(@"Images\{0}.png", GetNewName()), ImageFormat.Png);
                 MessageBox.Show("操作成功，请看Images文件夹！", "逆天友情提醒");
+                OpenDirectory();
+            }
+            else if (!string.IsNullOrEmpty(dataStr))
+            {
+                Stopwatch watch = new Stopwatch();
+                watch.Start();
+                int i = DownloadImg(dataStr);
+                watch.Stop();
+                MessageBox.Show(string.Format("成功提取{0}个图片,耗时{1}。请查看Images文件夹", i, watch.Elapsed, "逆天友情提醒"));
                 OpenDirectory();
             }
             else
@@ -93,8 +94,9 @@ namespace 剪贴板
         /// <param name="dataStr">页面字符串</param>
         /// <param name="i">成功条数</param>
         /// <returns></returns>
-        private static int DownloadImg(string dataStr, int i)
+        private static int DownloadImg(string dataStr)
         {
+            int i = 0;
             var collection = Regex.Matches(dataStr, @"<img([^>]*)\s*src=('|\"")([^'\""]+)('|\"")", RegexOptions.ECMAScript);
             WebClient webClient = new WebClient();
             foreach (Match item in collection)
@@ -103,7 +105,7 @@ namespace 剪贴板
                 try
                 {
                     CreateDirectory("Images");
-                    webClient.DownloadFile(imgPath, string.Format(@"Images\{0}.png", Path.GetFileName(imgPath)));//剪贴板的图片没有相对路径
+                    webClient.DownloadFileAsync(new Uri(imgPath), string.Format(@"Images\{0}.png", Path.GetFileName(imgPath)));//剪贴板的图片没有相对路径
                     i++;
                 }
                 catch (Exception ex) { File.WriteAllText("log.dnt", ex.ToString(), Encoding.UTF8); }
@@ -119,23 +121,10 @@ namespace 剪贴板
         private void lbl1_Click(object sender, EventArgs e)
         {
             ClearClipboard();
+            MessageBox.Show("剪贴板清除成功！", "逆天友情提醒");
         }
 
-        #region 公用方法
-        /// <summary>
-        /// 非HTML的单张图片
-        /// </summary>
-        /// <returns></returns>
-        private static Bitmap GetImgObj()
-        {
-            var data = Clipboard.GetDataObject();
-            if (data.GetDataPresent(DataFormats.Bitmap, true))
-            {
-                return data.GetData(DataFormats.Bitmap, true) as Bitmap;
-            }
-            return null;
-        }
-
+        #region 公用方法        
         /// <summary>
         /// HTML字符串
         /// </summary>
