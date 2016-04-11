@@ -28,8 +28,7 @@ namespace WaterMarkAPP
         /// <param name="e"></param>
         private void BtnFonts_Click(object sender, RoutedEventArgs e)
         {
-            WaterMark waterMark = WaterMarkFont();
-            DIVWaterMarks(waterMark);
+            DIVWaterMarks(WaterMarkFont());
         }
 
         /// <summary>
@@ -39,8 +38,7 @@ namespace WaterMarkAPP
         /// <param name="e"></param>
         private void BtnImages_Click(object sender, RoutedEventArgs e)
         {
-            WaterMark waterMark = WaterMarkImage();
-            DIVWaterMarks(waterMark);
+            DIVWaterMarks(WaterMarkImage());
         }
 
         /// <summary>
@@ -50,7 +48,15 @@ namespace WaterMarkAPP
         /// <param name="e"></param>
         private void BtnBord_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("下一次提交就有这个功能了，别急，helper类我都已经封装好了");
+            var list = ClipboardHelper.GetImagePathList();
+            if (list == null || list.Count() == 0)
+            {
+                MessageBox.Show("剪贴板没有图片信息");
+            }
+            else
+            {
+                SaveImages(WaterMarkImage(), list.ToArray());
+            }
         }
         #endregion
 
@@ -244,7 +250,7 @@ namespace WaterMarkAPP
                 }
             }
             //是否打开目录
-            MessageBoxResult result = MessageBox.Show("逆天友情提醒：已转换 " + num + " 张图片~是否打开目录？", "转换状态", MessageBoxButton.YesNo);
+            MessageBoxResult result = MessageBox.Show("逆天友情提醒：已转换 " + num + " 张图片~是否打开目录？", "转换状态~如果是原图，请检查下水印图片是否有问题", MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
                 Process.Start("explorer.exe ", savePath);//打开保存后的路径

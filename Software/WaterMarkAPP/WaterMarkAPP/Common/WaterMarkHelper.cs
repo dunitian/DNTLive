@@ -13,6 +13,19 @@ namespace WaterMarkAPP.Common
     /// </summary>
     public class WaterMarkHelper
     {
+        public static bool TryFromFile(string imgPath, ref Image img)
+        {
+            try
+            {
+                img = Image.FromFile(imgPath);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         #region 设置水印
         /// <summary>
         /// 设置水印
@@ -22,22 +35,17 @@ namespace WaterMarkAPP.Common
         /// <returns></returns>
         public static Image SetWaterMark(string imgPath, WaterMark model)
         {
-            //获取背景图
-            Image imgSource = Image.FromFile(imgPath);
-            //获取水印图片
-            Image markImg = null;
+            Image imgSource = null;//背景图
+            Image markImg = null;//水印图片
+            if (!TryFromFile(imgPath, ref imgSource))
+            {
+                return null;
+            }
 
             //水印检验（文字，图片[路径下是否存在图片]）
             #region 水印校验+水印处理
-            if (model == null)
-            {
-                return null;
-            }
-            //看看原图是否存在
-            if (!System.IO.File.Exists(imgPath))
-            {
-                return null;
-            }
+            if (model == null) { return null; }
+            if (!System.IO.File.Exists(imgPath)) { return null; }//看看原图是否存在
             //根据水印类型校验+水印处理
             switch (model.WaterMarkType)
             {
@@ -58,8 +66,10 @@ namespace WaterMarkAPP.Common
                     }
                     else
                     {
-                        //获得水印图像           
-                        markImg = Image.FromFile(model.ImgPath);
+                        if (!TryFromFile(model.ImgPath, ref markImg))//获得水印图像
+                        {
+                            return imgSource;
+                        }
                     }
                     break;
                 case WaterMarkTypeEnum.NoneMark:
@@ -69,7 +79,7 @@ namespace WaterMarkAPP.Common
 
             #region 创建颜色矩阵
             //创建颜色矩阵
-            float[][] ptsArray ={ 
+            float[][] ptsArray ={
                                  new float[] {1, 0, 0, 0, 0},
                                  new float[] {0, 1, 0, 0, 0},
                                  new float[] {0, 0, 1, 0, 0},
@@ -84,7 +94,6 @@ namespace WaterMarkAPP.Common
 
             //原图格式检验+水印
             #region 原图格式检验+水印
-
             //判断是否是索引图像格式
             if (imgSource.PixelFormat == PixelFormat.Format1bppIndexed || imgSource.PixelFormat == PixelFormat.Format4bppIndexed || imgSource.PixelFormat == PixelFormat.Format8bppIndexed)
             {
@@ -146,7 +155,7 @@ namespace WaterMarkAPP.Common
                 #endregion
             }
             #endregion
-        } 
+        }
         #endregion
 
         #region 水印处理-文字转图片

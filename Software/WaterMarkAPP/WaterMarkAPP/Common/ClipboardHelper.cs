@@ -63,9 +63,9 @@ namespace WaterMarkAPP.Common
                 try
                 {
                     CreateDirectory();
-                    string filePath = string.Format(@"Images\{0}.png", Path.GetFileName(imgPath));
-                    webClient.DownloadFileAsync(new Uri(imgPath), filePath);//剪贴板的图片没有相对路径
-                    imgPathList.Add(string.Format("{0}\filePath", Directory.GetCurrentDirectory()));
+                    string filePath = string.Format(@"Images\{0}", Path.GetFileName(imgPath));
+                    webClient.DownloadFile(item.Groups[3].Value, filePath);//剪贴板的图片没有相对路径
+                    imgPathList.Add(string.Format(@"{0}\{1}", Directory.GetCurrentDirectory(), filePath));
                 }
                 catch (Exception ex) { DNTLog(ex); }
             }
