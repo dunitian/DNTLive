@@ -7,12 +7,12 @@ using System.Windows;
 // 有关程序集的常规信息通过以下
 // 特性集控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("WaterMarkAPP")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("逆天通用水印")]
+[assembly: AssemblyDescription("支持多角度，多方式（新增剪贴板图片系列水印）")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("WaterMarkAPP")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCompany("逆天集团有限公司")]
+[assembly: AssemblyProduct("逆天通用水印")]
+[assembly: AssemblyCopyright("Copyright © DNT 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

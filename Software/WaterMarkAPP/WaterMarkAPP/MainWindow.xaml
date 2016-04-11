@@ -15,22 +15,18 @@
             <Border BorderBrush="Gray" 
                 BorderThickness="2"
                 Margin="10,50,10,40">
-                <Grid Background="#FF151515">
+                <Grid Background="#FF0C0B0B">
                     <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
                     <TextBlock FontFamily="微软雅黑">对不起，系统已挂请联系逆天重装Win10！</TextBlock>
-                    <Button Grid.Row="1" Opacity="0.6"  HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="100" Click="BtnFont_Click">单文水印</Button>
-                    <Button Grid.Row="2" Opacity="0.6"  HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="100" Click="BtnImage_Click">单图水印</Button>
-                    <Button Grid.Row="3" Opacity="0.6"  HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="100" Click="BtnFonts_Click">批文水印</Button>
-                    <Button Grid.Row="4" Opacity="0.6"  HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="100" Click="BtnImages_Click">批图水印</Button>
-                    <Button Grid.Row="5" Opacity="0.6"  HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="100" Click="Button_Click">关闭程序</Button>
+                    <Button Grid.Row="0" Opacity="0.6"  Background="Transparent" BorderBrush="#FFA009F7" Foreground="#FFA009F7" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="200" FontSize="22" Click="BtnFonts_Click">文 字 批 水 印</Button>
+                    <Button Grid.Row="1" Opacity="0.6"  Background="Transparent" BorderBrush="#FFC0C000" Foreground="#FFC0C000" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="200" FontSize="22" Click="BtnImages_Click">图 片 批 水 印</Button>
+                    <Button Grid.Row="2" Opacity="0.6"  Background="Transparent" BorderBrush="#FF00C000" Foreground="#FF00C000" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="200" FontSize="22" Click="BtnBord_Click">剪 贴 板 专 项</Button>
+                    <Button Grid.Row="3" Opacity="0.6"  Background="Transparent" BorderBrush="#FF00C0C0" Foreground="#FF00C0C0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="200" FontSize="22" Click="Button_Click">程 序 说 拜 拜</Button>
                 </Grid>
             </Border>
             <!--底部-->
@@ -41,9 +37,9 @@
                 Height="40">
                 <!--底部按键-->
                 <Grid>
-                    <TextBlock Text="毒" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="80,0,0,0" Width="20" Foreground="Gray" MouseLeave="TextBlock_MouseLeave" />
-                    <TextBlock Text="逆" HorizontalAlignment="Center" VerticalAlignment="Center" Width="20" Foreground="Gray"  MouseLeave="TextBlock_MouseLeave_1"/>
-                    <TextBlock Text="天" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,80,0" Width="20" Foreground="Gray"  MouseLeave="TextBlock_MouseLeave_2"/>
+                    <TextBlock Text="毒"  Width="20" FontSize="14" Foreground="#FFC0C000" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="80,0,0,0"/>
+                    <TextBlock Text="逆"  Width="20" FontSize="14" Foreground="#FFC0C000" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBlock Text="天"  Width="20" FontSize="14" Foreground="#FFC0C000" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,80,0"/>
                 </Grid>
             </Border>
         </Grid>
