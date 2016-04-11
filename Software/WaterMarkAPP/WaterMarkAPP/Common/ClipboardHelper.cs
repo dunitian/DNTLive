@@ -20,15 +20,35 @@ namespace WaterMarkAPP.Common
         {
             var imgPathList = new List<string>();
             var data = Clipboard.GetDataObject();
+            var formats = data.GetFormats();
+            //图片文件
+            if (data.GetDataPresent(DataFormats.FileDrop, true))
+            {
+                string[] objs = (string[])data.GetData(DataFormats.FileDrop, true);
+                if (objs != null)
+                {
+                    for (int i = 0; i < objs.Length; i++)
+                    {
+                        imgPathList.Add(objs[i]);
+                    }
+                }
+            }
+            //剪贴板内单文件
             if (data.GetDataPresent(DataFormats.Bitmap, true))
             {
                 string filePath = SaveImg(data.GetData(DataFormats.Bitmap, true) as Bitmap);
                 if (filePath != null) { imgPathList.Add(filePath); }
             }
+            //HTML页面里面的图片（网页 + word）
             if (data.GetDataPresent(DataFormats.Html, true))
             {
-                string dataStr = data.GetData(DataFormats.Html, true).ToString();
-                imgPathList.AddRange(DownloadImg(dataStr));
+                var obj = data.GetData(DataFormats.Html, true);
+                if (obj != null)
+                {
+                    string dataStr = obj.ToString();
+                    imgPathList.AddRange(DownloadImg(dataStr));
+                }
+
             }
             return imgPathList;
         }
@@ -40,6 +60,7 @@ namespace WaterMarkAPP.Common
         /// <returns></returns>
         private static string SaveImg(Bitmap bitmap)
         {
+            if (bitmap == null) { return null; }
             CreateDirectory();
             string filePath = string.Format(@"Images\{0}.png", Guid.NewGuid());
             try { bitmap.Save(filePath, ImageFormat.Png); return filePath; }

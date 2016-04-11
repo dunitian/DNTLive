@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WaterMarkAPP.Enums
+﻿namespace WaterMarkAPP.Enums
 {
     /// <summary>
     /// 水印类型

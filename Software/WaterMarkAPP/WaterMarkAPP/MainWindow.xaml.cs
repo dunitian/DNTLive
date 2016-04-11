@@ -7,6 +7,8 @@ using System.Windows;
 using System.Windows.Input;
 using WaterMarkAPP.Common;
 using WaterMarkAPP.Model;
+using System.Collections.Generic;
+using WaterMarkAPP.Enums;
 
 namespace WaterMarkAPP
 {
@@ -87,6 +89,45 @@ namespace WaterMarkAPP
         }
         #endregion
 
+        #region 配置信息
+        //配置信息
+        private static Dictionary<string, string> dics = new Dictionary<string, string>();
+        /// <summary>
+        /// 读取配置文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Border_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!Directory.Exists("Config"))
+            {
+                Directory.CreateDirectory("Config");
+            }
+            if (File.Exists("Config/App.dnt"))
+            {
+                string[] strLines = File.ReadAllLines("Config/App.dnt", System.Text.Encoding.UTF8);
+                for (int i = 0; i < strLines.Length; i++)
+                {
+                    var strs = strLines[i].Split(new char[] { ':', '：' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (strs.Length == 2)
+                    {
+                        dics.Add(strs[0], strs[1]);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 配置信息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            AppSetting.GetAppSetting().ShowDialog();
+        }
+        #endregion
+
         #region 软件代码（水印核心代码请看Helper类,最简洁的调用请看APIDemo文件夹里面的内容）
 
         #region 水印预设
@@ -97,14 +138,26 @@ namespace WaterMarkAPP
         private static WaterMark WaterMarkFont()
         {
             WaterMark waterMark = new WaterMark();
-            waterMark.WaterMarkType = Enums.WaterMarkTypeEnum.Text;
+            waterMark.WaterMarkType = WaterMarkTypeEnum.Text;
             waterMark.Transparency = 0.7f;
-            waterMark.Text = "dunitian.cnblogs.com";
             waterMark.FontStyle = System.Drawing.FontStyle.Bold;
             waterMark.FontFamily = "Consolas";
             waterMark.FontSize = 20f;
-            waterMark.BrushesColor = System.Drawing.Brushes.YellowGreen;
-            waterMark.WaterMarkLocation = Enums.WaterMarkLocationEnum.CenterCenter;
+            waterMark.BrushesColor = Brushes.YellowGreen;
+            waterMark.Text = "dnt.dkill.net";
+            waterMark.WaterMarkLocation = WaterMarkLocationEnum.BottomRight;
+            if (dics.ContainsKey("Text"))
+            {
+                waterMark.Text = dics["Text"];
+            }
+            if (dics.ContainsKey("WaterMarkLocation"))
+            {
+                WaterMarkLocationEnum resultEnum;
+                if (Enum.TryParse(dics["WaterMarkLocation"], out resultEnum))
+                {
+                    waterMark.WaterMarkLocation = resultEnum;
+                }
+            }
             return waterMark;
         }
 
@@ -115,10 +168,22 @@ namespace WaterMarkAPP
         private static WaterMark WaterMarkImage()
         {
             WaterMark waterMark = new WaterMark();
-            waterMark.WaterMarkType = Enums.WaterMarkTypeEnum.Image;
-            waterMark.ImgPath = "水印.png";
-            waterMark.WaterMarkLocation = Enums.WaterMarkLocationEnum.BottomRight;
+            waterMark.WaterMarkType = WaterMarkTypeEnum.Image;
+            waterMark.ImgPath = "Config/水印.png";
+            waterMark.WaterMarkLocation = WaterMarkLocationEnum.BottomRight;
             waterMark.Transparency = 0.7f;
+            if (dics.ContainsKey("ImgPath"))
+            {
+                waterMark.ImgPath = dics["ImgPath"];
+            }
+            if (dics.ContainsKey("WaterMarkLocation"))
+            {
+                WaterMarkLocationEnum resultEnum;
+                if (Enum.TryParse(dics["WaterMarkLocation"], out resultEnum))
+                {
+                    waterMark.WaterMarkLocation = resultEnum;
+                }
+            }
             return waterMark;
         }
         #endregion
