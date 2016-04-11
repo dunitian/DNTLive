@@ -21,6 +21,19 @@ namespace WaterMarkAPP.Common
             var imgPathList = new List<string>();
             var data = Clipboard.GetDataObject();
             var formats = data.GetFormats();
+            //二进制存储 (存储在剪贴板的截图|画画图内的图片)
+            if (data.GetDataPresent(DataFormats.Dib, true))
+            {
+                var imgSorce = Clipboard.GetImage();
+                Bitmap bmp = new Bitmap(imgSorce.PixelWidth, imgSorce.PixelHeight, PixelFormat.Format32bppPArgb);
+                BitmapData bmpdata = bmp.LockBits(new Rectangle(System.Drawing.Point.Empty, bmp.Size), ImageLockMode.WriteOnly, PixelFormat.Format32bppPArgb);
+                imgSorce.CopyPixels(Int32Rect.Empty, bmpdata.Scan0, bmpdata.Height * bmpdata.Stride, bmpdata.Stride);
+                bmp.UnlockBits(bmpdata);
+                CreateDirectory();
+                string filePath = string.Format(@"Images\{0}.png", Guid.NewGuid());
+                bmp.Save(filePath, ImageFormat.Png);
+                imgPathList.Add(filePath);
+            }
             //图片文件
             if (data.GetDataPresent(DataFormats.FileDrop, true))
             {
