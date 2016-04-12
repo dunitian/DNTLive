@@ -33,6 +33,7 @@
             this.btnPage = new System.Windows.Forms.Button();
             this.btnTxt = new System.Windows.Forms.Button();
             this.lbl1 = new System.Windows.Forms.Label();
+            this.btnWord = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnImg
@@ -41,7 +42,7 @@
             this.btnImg.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnImg.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnImg.ForeColor = System.Drawing.Color.Green;
-            this.btnImg.Location = new System.Drawing.Point(35, 236);
+            this.btnImg.Location = new System.Drawing.Point(35, 297);
             this.btnImg.Name = "btnImg";
             this.btnImg.Size = new System.Drawing.Size(519, 75);
             this.btnImg.TabIndex = 0;
@@ -53,8 +54,8 @@
             // 
             this.btnPage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPage.Font = new System.Drawing.Font("微软雅黑", 18F);
-            this.btnPage.ForeColor = System.Drawing.Color.Olive;
-            this.btnPage.Location = new System.Drawing.Point(35, 128);
+            this.btnPage.ForeColor = System.Drawing.Color.Teal;
+            this.btnPage.Location = new System.Drawing.Point(35, 107);
             this.btnPage.Name = "btnPage";
             this.btnPage.Size = new System.Drawing.Size(519, 75);
             this.btnPage.TabIndex = 1;
@@ -66,8 +67,8 @@
             // 
             this.btnTxt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTxt.Font = new System.Drawing.Font("微软雅黑", 18F);
-            this.btnTxt.ForeColor = System.Drawing.Color.Teal;
-            this.btnTxt.Location = new System.Drawing.Point(35, 29);
+            this.btnTxt.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.btnTxt.Location = new System.Drawing.Point(35, 14);
             this.btnTxt.Name = "btnTxt";
             this.btnTxt.Size = new System.Drawing.Size(519, 75);
             this.btnTxt.TabIndex = 2;
@@ -80,23 +81,38 @@
             this.lbl1.AutoSize = true;
             this.lbl1.BackColor = System.Drawing.Color.Black;
             this.lbl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lbl1.Location = new System.Drawing.Point(526, 326);
+            this.lbl1.Location = new System.Drawing.Point(526, 387);
             this.lbl1.Name = "lbl1";
             this.lbl1.Size = new System.Drawing.Size(65, 12);
             this.lbl1.TabIndex = 3;
             this.lbl1.Text = "清除剪贴板";
             this.lbl1.Click += new System.EventHandler(this.lbl1_Click);
             // 
+            // btnWord
+            // 
+            this.btnWord.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnWord.Font = new System.Drawing.Font("微软雅黑", 18F);
+            this.btnWord.ForeColor = System.Drawing.Color.Olive;
+            this.btnWord.Location = new System.Drawing.Point(38, 204);
+            this.btnWord.Name = "btnWord";
+            this.btnWord.Size = new System.Drawing.Size(519, 75);
+            this.btnWord.TabIndex = 4;
+            this.btnWord.Text = "生 成 文 档";
+            this.btnWord.UseVisualStyleBackColor = true;
+            this.btnWord.Click += new System.EventHandler(this.btnWord_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(594, 347);
+            this.ClientSize = new System.Drawing.Size(594, 407);
+            this.Controls.Add(this.btnWord);
             this.Controls.Add(this.lbl1);
             this.Controls.Add(this.btnTxt);
             this.Controls.Add(this.btnPage);
             this.Controls.Add(this.btnImg);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -112,6 +128,7 @@
         private System.Windows.Forms.Button btnPage;
         private System.Windows.Forms.Button btnTxt;
         private System.Windows.Forms.Label lbl1;
+        private System.Windows.Forms.Button btnWord;
     }
 }
 

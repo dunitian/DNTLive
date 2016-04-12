@@ -58,14 +58,36 @@ namespace 剪贴板
         }
 
         /// <summary>
+        /// 生成文档
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+        private void btnWord_Click(object sender, EventArgs e)
+        {
+            var dataStr = GetHtmlStr();
+            if (!string.IsNullOrEmpty(dataStr))
+            {
+                MessageBox.Show("操作成功，请看打开的页面！", "逆天友情提醒");
+                OutputHtml(dataStr, ".doc");
+            }
+            else
+            {
+                MessageBox.Show("剪贴板图文内容为空！", "逆天友情提醒");
+            }
+        }
+
+        /// <summary>
         /// 导出图片
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnImg_Click(object sender, EventArgs e)
         {
+            int i = 0;
             var imgObj = Clipboard.GetImage();
             var dataStr = GetHtmlStr();
+            int fileCount = GetFileDrop();
             if (imgObj != null)//非HTML的单张图片
             {
                 CreateDirectory("Images");
@@ -77,15 +99,45 @@ namespace 剪贴板
             {
                 Stopwatch watch = new Stopwatch();
                 watch.Start();
-                int i = DownloadImg(dataStr);
+                i = DownloadImg(dataStr);
                 watch.Stop();
-                MessageBox.Show(string.Format("成功提取{0}个图片,耗时{1}。请查看Images文件夹", i, watch.Elapsed, "逆天友情提醒"));
+                MessageBox.Show(string.Format("成功提取{0}个图片,耗时{1}。请查看Images文件夹", i, watch.Elapsed), "逆天友情提醒");
+                OpenDirectory();
+            }
+            else if (fileCount > 0)
+            {
+                MessageBox.Show(string.Format("成功提取{0}个图片,请查看Images文件夹", fileCount), "逆天友情提醒");
                 OpenDirectory();
             }
             else
             {
                 MessageBox.Show("剪贴板图片信息为空！", "逆天友情提醒");
             }
+        }
+
+        /// <summary>
+        /// 本地图片-文件路径
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        private int GetFileDrop()
+        {
+            int i = 0;
+            var data = Clipboard.GetDataObject();
+            if (data.GetDataPresent(DataFormats.FileDrop, true))
+            {
+                string[] objs = (string[])data.GetData(DataFormats.FileDrop, true);
+                if (objs != null)
+                {
+                    CreateDirectory("Images");
+                    for (int j = 0; j < objs.Length; j++)
+                    {
+                        File.Copy(objs[i], GetNewName());
+                        i++;
+                    }
+                }
+            }
+            return i;
         }
 
         /// <summary>
@@ -143,10 +195,11 @@ namespace 剪贴板
         /// 输出HTML文件
         /// </summary>
         /// <param name="dataStr"></param>
-        private static void OutputHtml(string dataStr)
+        /// <param name="ext"></param>
+        private static void OutputHtml(string dataStr, string ext = ".html")
         {
             CreateDirectory("Page");
-            string name = string.Format(@"Page\{0}.html", GetNewName());
+            string name = string.Format(@"Page\{0}{1}", GetNewName(), ext);
             File.WriteAllText(name, dataStr.Substring(dataStr.IndexOf("<html")), Encoding.UTF8);//除去版权信息
             Process.Start(name);
         }
@@ -156,7 +209,9 @@ namespace 剪贴板
         /// </summary>
         private static void OpenDirectory()
         {
-            Process.Start("explorer.exe ", Directory.GetCurrentDirectory());//打开目录
+            var result = MessageBox.Show("是否打开文件夹？", "逆天提醒", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+                Process.Start("explorer.exe ", string.Format(@"{0}\images", Directory.GetCurrentDirectory()));//打开目录
         }
 
         /// <summary>
