@@ -1,0 +1,20 @@
+﻿th, td {
+    text-align: center !important;
+}
+
+.btn-group select {
+    width: 150px;
+    margin: 1em;
+}
+
+.info {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media screen and (max-width: 736px) {
+    .btn-group select {
+        width: 90%;
+    }
+}

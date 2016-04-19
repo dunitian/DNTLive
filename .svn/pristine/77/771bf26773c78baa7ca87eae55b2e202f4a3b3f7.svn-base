@@ -1,0 +1,4 @@
+﻿System.NotSupportedException: WebClient 不支持并发 I/O 操作。
+   在 System.Net.WebClient.ClearWebClientState()
+   在 System.Net.WebClient.DownloadFileAsync(Uri address, String fileName, Object userToken)
+   在 剪贴板.MainForm.DownloadImg(String dataStr) 位置 F:\Work\DNTLive\Software\万恶剪贴板\万恶剪贴板\MainForm.cs:行号 160

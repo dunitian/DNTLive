@@ -1,0 +1,2 @@
+﻿System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 WaterMarkAPP.Common.ClipboardHelper.SaveImg(Bitmap bitmap) 位置 F:\Work\DNTLive\Software\WaterMarkAPP\WaterMarkAPP\Common\ClipboardHelper.cs:行号 45

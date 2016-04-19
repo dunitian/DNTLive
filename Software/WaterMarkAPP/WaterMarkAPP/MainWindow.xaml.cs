@@ -70,7 +70,8 @@ namespace WaterMarkAPP
         /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Environment.Exit(0);
+            //Environment.Exit(0);
+            Application.Current.Shutdown();
         }
         #endregion
 

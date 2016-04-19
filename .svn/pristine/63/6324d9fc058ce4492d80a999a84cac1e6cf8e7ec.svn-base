@@ -1,0 +1,10 @@
+﻿<Application x:Class="WaterMarkAPP.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>
+
+<!--如果想看看最简洁的调用方式，请修改StartupUri="APIDemo\WaterMarkAPI.xaml"-->

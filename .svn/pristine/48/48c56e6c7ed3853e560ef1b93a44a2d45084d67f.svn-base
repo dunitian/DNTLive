@@ -1,0 +1,4 @@
+﻿System.ArgumentException: 参数无效。
+   在 System.Drawing.Image.FromStream(Stream stream, Boolean useEmbeddedColorManagement, Boolean validateImageData)
+   在 System.Drawing.Image.FromStream(Stream stream)
+   在 WaterMarkAPP.Common.ClipboardHelper.GetImagePathList() 位置 F:\Work\DNTLive\Software\WaterMarkAPP\WaterMarkAPP\Common\ClipboardHelper.cs:行号 47
