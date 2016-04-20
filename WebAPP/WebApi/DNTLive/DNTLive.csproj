@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="index.html" />
     <Content Include="Javascript\city\area.js" />
     <Content Include="StyleCss\city\shopmenu.css" />
     <Content Include="shop.html" />

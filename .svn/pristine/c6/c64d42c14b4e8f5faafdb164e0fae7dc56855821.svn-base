@@ -1,0 +1,91 @@
+﻿<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>今天涨价了吗？</title>
+    <!-- Bootstrap -->
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/StyleCss/city/shopmenu.css" rel="stylesheet" />
+    <!--[if lt IE 9]>
+      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="info">
+        <h1 class="page-header">今天涨价了吗？</h1>
+        <div class="btn-group">
+            <select id="s_province" class="btn btn-default dropdown-toggle" name="s_province"></select>
+            <select id="s_city" class="btn btn-default dropdown-toggle" name="s_city"></select>
+            <select id="s_county" class="btn btn-default dropdown-toggle" name="s_county"></select>
+            <script src="/Javascript/city/area.js"></script>
+            <script type="text/javascript">_init_area();</script>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>超市名</th>
+                        <th>菜单名</th>
+                        <th>价格点</th>
+                        <th>所属类</th>
+                    </tr>
+                </thead>
+                <tbody id="shopmenudata"></tbody>
+            </table>
+        </div>
+    </div>
+    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        //追加到html中 obj:$('#shopmenudata') data 键值对数组
+        function appendDatas(obj, data) {
+            for (var i = 0; i < data.length; i++) {
+                obj.append('<tr><td>' + (i + 1) + '</td><td>' + data[i].SName + '</td><td>' + data[i].MName + '</td><td>' + GetFormartPrice(data[i].MPrice) + '</td><td>' + data[i].MType + '</td></tr>');
+            }
+        }
+        //根据 name 获取菜单价格
+        function GetDNTData(name) {
+            $.get('/api/shop/get', { name: name }, function (data) {
+                var obj = $('#shopmenudata');
+                obj.html('');
+                if (data == null || data == '') {
+                    obj.html('<tr><td colspan="5" align="center">暂时没有查询到数据....</td></tr>')
+                    return false;
+                }
+                data = eval(data);
+                appendDatas(obj, data);
+            });
+        }
+        //价格格式化-xx.xx
+        function GetFormartPrice(price) {
+            var s = price.toString();
+            var rs = s.indexOf('.');
+            if (rs < 0) {
+                rs = s.length;
+                s += '.';
+            }
+            while (s.length <= rs + 2) {
+                s += '0';
+            }
+            return s;
+        }
+        //有变化就更新数据
+        $('#s_county').change(function () {
+            var name = $('#s_county').val();
+            console.log(name);
+            if (name != '市、县级市') {
+                GetDNTData(name);
+            }
+        });
+
+        //默认值-后期可以根据ip定位
+        $(function () {
+            GetDNTData('滨湖区');
+        });
+    </script>
+</body>
+</html>

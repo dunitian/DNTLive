@@ -1,9 +1,0 @@
-﻿<?xml version="1.0"?>
-<configuration>
-  <connectionStrings>
-    <add name="SqlConnStr" connectionString="data source=.;initial catalog=DNTValues;user id=sa;password=dnt.dkill.net1"/>
-  </connectionStrings>
-  <system.web>
-    <compilation debug="true"/>
-  </system.web>
-</configuration>
