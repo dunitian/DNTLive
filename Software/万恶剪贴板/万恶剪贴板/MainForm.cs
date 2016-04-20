@@ -30,7 +30,7 @@ namespace 剪贴板
                 string name = string.Format(@"Text\{0}.txt", GetNewName());
                 File.WriteAllText(name, dataStr, Encoding.UTF8);
                 MessageBox.Show(string.Format("操作成功，请看Text文件夹！", "逆天友情提醒"));
-                OpenDirectory();
+                OpenDirectory("Text");
             }
             else
             {
@@ -207,11 +207,11 @@ namespace 剪贴板
         /// <summary>
         /// 打开目录
         /// </summary>
-        private static void OpenDirectory()
+        private static void OpenDirectory(string typeStr= "images")
         {
             var result = MessageBox.Show("是否打开文件夹？", "逆天提醒", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
-                Process.Start("explorer.exe ", string.Format(@"{0}\images", Directory.GetCurrentDirectory()));//打开目录
+                Process.Start("explorer.exe ", string.Format(@"{0}\{1}", Directory.GetCurrentDirectory(),typeStr));//打开目录
         }
 
         /// <summary>
