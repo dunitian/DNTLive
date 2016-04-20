@@ -10,14 +10,12 @@ namespace CSharpStudy
 
         public void ProcessRequest(HttpContext context)
         {
-            context.Response.ContentType = "text/plain";
-            var uri = context.Request.UrlReferrer;//注意一下可能为空
-            if (uri != null)
-            {
-                context.Response.Write(string.Format("来源URL：{0}", uri));
-            }
+            if (Common.DomainHelper.IsOtherDomain(context)) { context.Response.End(); }
+            context.Response.Write("<img src='/Images/dnt.jpg'/>");
             context.Response.End();
         }
+
+        
 
         public bool IsReusable
         {

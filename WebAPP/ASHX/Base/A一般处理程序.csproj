@@ -79,8 +79,10 @@
     <Compile Include="ASHX\HIpAddress.ashx.cs">
       <DependentUpon>HIpAddress.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Common\DomainHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\dnt.jpg" />
     <Content Include="index.html" />
     <Content Include="MyHtmlPage.html" />
     <Content Include="web.config" />
