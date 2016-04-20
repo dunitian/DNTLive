@@ -14,7 +14,7 @@ namespace CSharpStudy
             var uri = context.Request.UrlReferrer;//注意一下可能为空
             if (uri != null)
             {
-                context.Response.Write(string.Format("来源URL：", uri));
+                context.Response.Write(string.Format("来源URL：{0}", uri));
             }
             context.Response.End();
         }
