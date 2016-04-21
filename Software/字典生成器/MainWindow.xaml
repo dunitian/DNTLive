@@ -3,10 +3,82 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:字典生成器"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+        xmlns:local="clr-namespace:字典生成器" Background="Transparent" AllowsTransparency="True" 
+        WindowStyle="None" ShowInTaskbar="True" WindowStartupLocation="CenterScreen" MouseLeftButtonDown="DragWindow"
+        mc:Ignorable="d" Title="MainWindow" Width="800" Height="250" Icon="32.ico">
+    <Border BorderBrush="#FF00C0C0" BorderThickness="3" Opacity="0.8" CornerRadius="10,10,10,10" Background="Black">
+        <Grid>
+            <Grid.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="FontSize" Value="20"></Setter>
+                    <Setter Property="Foreground" Value="#FF00C0C0"></Setter>
+                    <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                </Style>
+                <Style TargetType="CheckBox">
+                    <Setter Property="Width" Value="100"></Setter>
+                    <Setter Property="Height" Value="50"></Setter>
+                    <Setter Property="FontSize" Value="17"></Setter>
+                    <Setter Property="Foreground" Value="#FF00C0C0"></Setter>
+                    <Setter Property="VerticalAlignment" Value="Top"></Setter>
+                    <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                </Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="TextAlignment" Value="Center"></Setter>
+                    <Setter Property="BorderBrush" Value="#FF00C0C0"></Setter>
+                    <Setter Property="Foreground"  Value="#FF00C0C0"></Setter>
+                    <Setter Property="Background" Value="Transparent"></Setter>
+                    <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                    <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                </Style>
+                <Style TargetType="Button">
+                    <Setter Property="Width" Value="100"></Setter>
+                    <Setter Property="Height" Value="35"></Setter>
+                    <Setter Property="FontSize" Value="20"></Setter>
+                    <Setter Property="Background" Value="Transparent"></Setter>
+                    <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                    <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                </Style>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <!--第一行-->
+            <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" VerticalAlignment="Bottom">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" HorizontalAlignment="Right">输出路径：</Label>
+                <TextBox Grid.Column="1" HorizontalAlignment="Left" Grid.ColumnSpan="3" FontSize="20" Width="470" Height="35">D:\temp</TextBox>
+                <Button Grid.Column="4" BorderBrush="#FF00C0C0" Foreground="#FF00C0C0">浏  览</Button>
+            </Grid>
+            <!--第三行-->
+            <CheckBox Grid.Row="2" Grid.Column="0" Content="0 ~ 9" IsChecked="True"></CheckBox>
+            <CheckBox Grid.Row="2" Grid.Column="1" Content="a ~ z" IsChecked="True"></CheckBox>
+            <CheckBox Grid.Row="2" Grid.Column="2" Content="A ~ Z"></CheckBox>
+            <CheckBox Grid.Row="2" Grid.Column="3" Content="特殊符号"></CheckBox>
+            <Label Grid.Row="2" Grid.Column="4" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="17">位</Label>
+            <TextBox Grid.Row="2" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="17" Width="133">5</TextBox>
+            <!--第四行-->
+            <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Top" HorizontalAlignment="Right" Width="200" Height="50" BorderBrush="#FFC0C000" Foreground="#FFC0C000" Click="Exit_Click">退 出 程 序</Button>
+            <Button Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" VerticalAlignment="Top" HorizontalAlignment="Right" Width="200" Height="50" BorderBrush="#FF00C000" Foreground="#FF00C000" Click="FileWrite_Click">生 成 字 典</Button>
+            <Label Grid.Row="3" Grid.Column="4" FontSize="12" VerticalAlignment="Bottom" HorizontalAlignment="Right" MouseDown="link_click">联系作者</Label>
+        </Grid>
+    </Border>
 </Window>
