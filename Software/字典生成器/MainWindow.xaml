@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:字典生成器" Background="Transparent" AllowsTransparency="True" 
+        xmlns:local="clr-namespace:字典生成器" Background="Transparent" AllowsTransparency="True" Topmost="True"
         WindowStyle="None" ShowInTaskbar="True" WindowStartupLocation="CenterScreen" MouseLeftButtonDown="DragWindow"
         mc:Ignorable="d" Title="黑客字典生成器" Width="800" Height="250" Icon="32.ico" Loaded="Window_Loaded">
     <Border BorderBrush="#FF00C0C0" BorderThickness="2" Opacity="0.9" CornerRadius="10,10,10,10" Background="Black">
