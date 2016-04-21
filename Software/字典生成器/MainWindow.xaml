@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:字典生成器" Background="Transparent" AllowsTransparency="True" 
         WindowStyle="None" ShowInTaskbar="True" WindowStartupLocation="CenterScreen" MouseLeftButtonDown="DragWindow"
-        mc:Ignorable="d" Title="MainWindow" Width="800" Height="250" Icon="32.ico">
-    <Border BorderBrush="#FF00C0C0" BorderThickness="3" Opacity="0.8" CornerRadius="10,10,10,10" Background="Black">
+        mc:Ignorable="d" Title="黑客字典生成器" Width="800" Height="250" Icon="32.ico" Loaded="Window_Loaded">
+    <Border BorderBrush="#FF00C0C0" BorderThickness="2" Opacity="0.9" CornerRadius="10,10,10,10" Background="Black">
         <Grid>
             <Grid.Resources>
                 <Style TargetType="Label">
@@ -65,16 +65,16 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" HorizontalAlignment="Right">输出路径：</Label>
-                <TextBox Grid.Column="1" HorizontalAlignment="Left" Grid.ColumnSpan="3" FontSize="20" Width="470" Height="35">D:\temp</TextBox>
-                <Button Grid.Column="4" BorderBrush="#FF00C0C0" Foreground="#FF00C0C0">浏  览</Button>
+                <TextBox x:Name="txtPath" Grid.Column="1" HorizontalAlignment="Left" Grid.ColumnSpan="3" FontSize="20" Width="470" Height="35"></TextBox>
+                <Button Grid.Column="4" BorderBrush="#FF00C0C0" Foreground="#FF00C0C0" Click="Button_Click">浏  览</Button>
             </Grid>
             <!--第三行-->
-            <CheckBox Grid.Row="2" Grid.Column="0" Content="0 ~ 9" IsChecked="True"></CheckBox>
-            <CheckBox Grid.Row="2" Grid.Column="1" Content="a ~ z" IsChecked="True"></CheckBox>
-            <CheckBox Grid.Row="2" Grid.Column="2" Content="A ~ Z"></CheckBox>
-            <CheckBox Grid.Row="2" Grid.Column="3" Content="特殊符号"></CheckBox>
+            <CheckBox x:Name="cbox09" Grid.Row="2" Grid.Column="0" Content="0 ~ 9" IsChecked="True"></CheckBox>
+            <CheckBox x:Name="cboxaz" Grid.Row="2" Grid.Column="1" Content="a ~ z" IsChecked="True"></CheckBox>
+            <CheckBox x:Name="cboxAZ" Grid.Row="2" Grid.Column="2" Content="A ~ Z"></CheckBox>
+            <CheckBox x:Name="cboxChar" Grid.Row="2" Grid.Column="3" Content="特殊符号"></CheckBox>
+            <TextBox x:Name="txtNum" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="17" Width="133">1~99</TextBox>
             <Label Grid.Row="2" Grid.Column="4" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="17">位</Label>
-            <TextBox Grid.Row="2" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="17" Width="133">5</TextBox>
             <!--第四行-->
             <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Top" HorizontalAlignment="Right" Width="200" Height="50" BorderBrush="#FFC0C000" Foreground="#FFC0C000" Click="Exit_Click">退 出 程 序</Button>
             <Button Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" VerticalAlignment="Top" HorizontalAlignment="Right" Width="200" Height="50" BorderBrush="#FF00C000" Foreground="#FF00C000" Click="FileWrite_Click">生 成 字 典</Button>

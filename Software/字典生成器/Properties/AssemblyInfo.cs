@@ -7,12 +7,12 @@ using System.Windows;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("字典生成器")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("黑客字典V1.0")]
+[assembly: AssemblyDescription("黑客字典，批量生成字典，可以用于批量爆破或域名批量注册。。。")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("逆天集团有限公司")]
 [assembly: AssemblyProduct("字典生成器")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCopyright("Copyright © DNT  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
