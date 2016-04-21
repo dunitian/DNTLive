@@ -97,6 +97,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Common\DapperHelperAsync.cs" />
     <Compile Include="Common\DapperHelper.cs" />
+    <Compile Include="Controllers\CostController.cs" />
     <Compile Include="Controllers\ShopController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
