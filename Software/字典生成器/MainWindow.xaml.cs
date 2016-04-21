@@ -35,9 +35,12 @@ namespace 字典生成器
             int num;
             int.TryParse(txtNum.Text, out num);
             if (num <= 0 || num > 999) { ShowLog("字典位数不对头哦！"); return; }
+            var timer = new System.Diagnostics.Stopwatch();
+            timer.Start();
             if (SaveFile(path, num))
             {
-                var result = System.Windows.Forms.MessageBox.Show("生成成功！是否要打开目录？", "逆天友情提醒", System.Windows.Forms.MessageBoxButtons.YesNo);
+                timer.Stop();
+                var result = System.Windows.Forms.MessageBox.Show(string.Format("生成成功！总共：{0}个记录，耗时：{1}", dicList.Count, timer.Elapsed), "是否要打开目录？", System.Windows.Forms.MessageBoxButtons.YesNo);
                 if (result == System.Windows.Forms.DialogResult.Yes)
                 {
                     System.Diagnostics.Process.Start("explorer.exe ", path);//打开保存后的路径
@@ -69,8 +72,8 @@ namespace 字典生成器
             GetHackerPass(num);
             try
             {
-                var strs = dicList.ToArray();
-                File.WriteAllLines(string.Format(@"{0}\hacker.txt", path), strs);
+                System.GC.Collect();
+                File.WriteAllLines(string.Format(@"{0}\hacker.txt", path), dicList.ToArray());
             }
             catch (System.Exception ex)
             {
@@ -89,6 +92,7 @@ namespace 字典生成器
             {
                 char[] chars = new char[i];
                 CreateDics(chars, i);
+                System.GC.Collect();
             }
         }
         /// <summary>
@@ -112,6 +116,7 @@ namespace 字典生成器
                 }
             }
         }
+
         #region 弹框信息
         /// <summary>
         /// 弹框
@@ -169,9 +174,9 @@ namespace 字典生成器
             txtPath.Text = Directory.GetCurrentDirectory();
         }
         #endregion
-
+        #region 选择路径
         /// <summary>
-        ///
+        ///存放路径初始化
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -183,5 +188,6 @@ namespace 字典生成器
                 txtPath.Text = dialog.SelectedPath;
             }
         }
+        #endregion
     }
 }
