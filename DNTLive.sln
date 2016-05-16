@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApi", "WebApi", "{5C6E31
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "黑客字典", "Software\字典生成器\黑客字典.csproj", "{8B733D52-9BA6-4705-AE1E-DEBE01EA213F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhatLength", "WhatLength\WhatLength.csproj", "{7EA58211-5FE7-4D08-98CD-B31A7B90418E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhatLength", "Software\WhatLength\WhatLength.csproj", "{7EA58211-5FE7-4D08-98CD-B31A7B90418E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
