@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace WaterWaterWaterMark
 {
@@ -33,20 +34,10 @@ namespace WaterWaterWaterMark
         /// <param name="imgPaths"></param>
         /// <param name="waterImgPath"></param>
         /// <returns></returns>
-        private int SetWaterMark(string[] imgPaths, string waterImgPath)
+        private int SetWaterMark(string[] imgPaths, string waterImgPath, string savePath)
         {
             int count = 0;
-            #region 存储专用
-            //图片所处目录
-            string dirPath = Path.GetDirectoryName(imgPaths[0]);
-            //存放目录
-            string savePath = string.Format("{0}\\DNTWaterMark", dirPath);
-            //是否存在，不存在就创建
-            if (!Directory.Exists(savePath))
-            {
-                Directory.CreateDirectory(savePath);
-            }
-            #endregion
+
             for (int k = 0; k < imgPaths.Length; k++)
             {
                 //文件名
@@ -86,12 +77,12 @@ namespace WaterWaterWaterMark
                 }
                 catch (Exception ex)
                 {
-                    continue;
+                    File.AppendAllText("dnt.log", ex.ToString());
                 }
             }
             return count;
         }
-        private void DivWaterMark(string path)
+        private void DivWaterMark(string path, string dicName)
         {
             System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog
             {
@@ -100,18 +91,45 @@ namespace WaterWaterWaterMark
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 string[] files = Directory.GetFiles(dialog.SelectedPath);
+                if (files.Length <= 0)
+                {
+                    return;
+                }
                 //类型名进行过滤
-                var listFiles = files.Where(f => f.Contains(".png") || f.Contains(".jpg") || f.Contains(".bmp") || f.Contains(".gif") || f.Contains(".jpeg"));
+                var listFiles = files.Where(f => f.ToLower().Contains(".png") || f.ToLower().Contains(".jpg") || f.ToLower().Contains(".bmp") || f.ToLower().Contains(".gif") || f.ToLower().Contains(".jpeg"));
                 if (listFiles == null || listFiles.Count() < 1) { MessageBox.Show("该目录木有png，jpg，bmp，gif之类的常用图片格式", "逆天友情提醒"); return; }
                 files = listFiles.ToArray();
+                #region 存储专用
+                //图片所处目录
+                string dirPath = Path.GetDirectoryName(files[0]);
+                //存放目录
+                string savePath = string.Format("{0}\\{1}", dirPath, dicName);
+                //是否存在，不存在就创建
+                if (!Directory.Exists(savePath))
+                {
+                    Directory.CreateDirectory(savePath);
+                }
+                //日记专用
+                if (!File.Exists("dnt.log"))
+                {
+                    File.Create("dnt.log");
+                }
+                #endregion
+                var task = Task.Run(() => SetWaterMark(files, path, savePath));
+                var result = MessageBox.Show(string.Format("总共识别出 {0} 张图片，操作进行中~~~", files.Length), "逆天友情提醒~~~是否打开目录？", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    Process.Start("explorer.exe ", savePath);//打开保存后的路径
+                }
 
-                Stopwatch timer = new Stopwatch();
-                timer.Start();
-                int count = SetWaterMark(files, path);
-                timer.Stop();
-                MessageBox.Show(string.Format("批量水印了 {0} 张图片！耗时： {1} s", count, timer.ElapsedMilliseconds / 1000));
+                //Stopwatch timer = new Stopwatch();
+                //timer.Start();
+                //int count = SetWaterMark(files, path);
+                //timer.Stop();
+                //MessageBox.Show(string.Format("批量水印了 {0} 张图片！耗时： {1} s", task.Result, timer.ElapsedMilliseconds / 1000));
+
             }
-        } 
+        }
         #endregion
 
         #region 按钮事件
@@ -128,7 +146,7 @@ namespace WaterWaterWaterMark
                 MessageBox.Show("请检查白色水印图是否存在", "Images/白色.png 不存在");
                 return;
             }
-            DivWaterMark(path);
+            DivWaterMark(path, "DNTWhite");
         }
 
         /// <summary>
@@ -144,8 +162,8 @@ namespace WaterWaterWaterMark
                 MessageBox.Show("请检查黑色水印图是否存在", "Images/黑色.png 不存在");
                 return;
             }
-            DivWaterMark(path);
-        } 
+            DivWaterMark(path, "DNTBlack");
+        }
         #endregion
 
         #region 窗体拖动
