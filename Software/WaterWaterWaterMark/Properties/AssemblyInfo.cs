@@ -7,12 +7,12 @@ using System.Windows;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("WaterWaterWaterMark")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("米兰批量水印 V1.0.1")]
+[assembly: AssemblyDescription("本软件为逆天专门为妹子准备，如有需求请通过妹子的授权")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("WaterWaterWaterMark")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCompany("逆天有限公司")]
+[assembly: AssemblyProduct("http://www.dkill.net")]
+[assembly: AssemblyCopyright("Copyright © DNT  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
