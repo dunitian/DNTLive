@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Software", "Software", "{036FE075-AF05-4CEF-A811-A485DB49F7E8}"
 EndProject
@@ -28,6 +28,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WaterMarkSoftware", "WaterMarkSoftware", "{72FE3F80-7C89-4111-A071-1C987D5B2291}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaterMarkExpress", "Software\WaterMarkAPP\WaterMarkExpress\WaterMarkExpress.csproj", "{CA1F007E-30E6-41E4-9F4B-A73FD7853107}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaterWaterWaterMark", "Software\WaterWaterWaterMark\WaterWaterWaterMark.csproj", "{C99C8844-A7C4-483C-8DDD-7F6028F5F39C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{CA1F007E-30E6-41E4-9F4B-A73FD7853107}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA1F007E-30E6-41E4-9F4B-A73FD7853107}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA1F007E-30E6-41E4-9F4B-A73FD7853107}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C99C8844-A7C4-483C-8DDD-7F6028F5F39C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C99C8844-A7C4-483C-8DDD-7F6028F5F39C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C99C8844-A7C4-483C-8DDD-7F6028F5F39C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C99C8844-A7C4-483C-8DDD-7F6028F5F39C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,5 +93,6 @@ Global
 		{E62A7269-FDCD-4A6A-8936-2DAC8526C1EB} = {036FE075-AF05-4CEF-A811-A485DB49F7E8}
 		{72FE3F80-7C89-4111-A071-1C987D5B2291} = {036FE075-AF05-4CEF-A811-A485DB49F7E8}
 		{CA1F007E-30E6-41E4-9F4B-A73FD7853107} = {72FE3F80-7C89-4111-A071-1C987D5B2291}
+		{C99C8844-A7C4-483C-8DDD-7F6028F5F39C} = {72FE3F80-7C89-4111-A071-1C987D5B2291}
 	EndGlobalSection
 EndGlobal
