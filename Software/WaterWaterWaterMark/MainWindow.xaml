@@ -22,7 +22,7 @@
                     <TextBlock FontFamily="微软雅黑">对不起，系统已挂请联系逆天重装Win10！</TextBlock>
                     <Button Grid.Row="0" Opacity="0.6"  Background="Transparent" BorderBrush="#FFBD73E8" Foreground="#FFBD73E8" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="200" FontSize="22" Click="Button_Click_1">白 背 景 水 印</Button>
                     <Button Grid.Row="1" Opacity="0.6"  Background="Transparent" BorderBrush="#FFC0C000" Foreground="#FFC0C000" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="200" FontSize="22" Click="Button_Click_2">黑 背 景 水 印</Button>
-                    <Button Grid.Row="2" Opacity="0.6"  Background="Transparent" BorderBrush="#FF00C000" Foreground="#FF00C000" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="200" FontSize="22" Click="Button_Click_3">在 线 批 水 印</Button>
+                    <Button Grid.Row="2" Opacity="0.6"  Background="Transparent" BorderBrush="#FF00C000" Foreground="#FF00C000" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="200" FontSize="22" Click="Button_Click_3">设 置 透 明 度</Button>
                     <Button Grid.Row="3" Opacity="0.6"  Background="Transparent" BorderBrush="#FF00C0C0" Foreground="#FF00C0C0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="200" FontSize="22" Click="Button_Click">程 序 说 拜 拜</Button>
                 </Grid>
             </Border>

@@ -14,15 +14,29 @@ namespace WaterWaterWaterMark
     /// </summary>
     public partial class MainWindow : Window
     {
+        double o;//全局变量（透明度，建议1~25）
         public MainWindow()
         {
             InitializeComponent();
+
             #region 愚人节过期~（简单版-给别人一条后路）
             DateTime today = DateTime.Now;
             if (DateTime.Compare(today, new DateTime(2017, 04, 01)) > 0)
             {
                 MessageBox.Show("愚人节快乐~~软件过期咯~~~\n\n其实逆天故意留了一个小bug，找到你就可以继续用了哦~", "对不起你和逆天不熟，所以逆天的软件不给你用~");
                 Application.Current.Shutdown();
+            }
+            #endregion
+
+            #region 初始化
+            if (!Directory.Exists("Images"))
+            {
+                Directory.CreateDirectory("Images");
+            }
+            //日记专用
+            if (!File.Exists("Images/dnt.log"))
+            {
+                File.Create("Images/dnt.log");
             }
             #endregion
         }
@@ -60,8 +74,8 @@ namespace WaterWaterWaterMark
                             int x = Convert.ToInt32(Math.Ceiling(imgWidth * 1.0 / smallWidth));
                             int y = Convert.ToInt32(Math.Ceiling(imgHeight * 1.0 / smallHeight));
 
-                            //透明度
-                            waterimg.Evaluate(Channels.Alpha, EvaluateOperator.Divide, 2);
+                            //透明度（1~100，越大水印越淡）
+                            waterimg.Evaluate(Channels.Alpha, EvaluateOperator.Divide, o);
                             for (int i = 0; i < x; i++)
                             {
                                 for (int j = 0; j < y; j++)
@@ -77,7 +91,7 @@ namespace WaterWaterWaterMark
                 }
                 catch (Exception ex)
                 {
-                    File.AppendAllText("dnt.log", ex.ToString());
+                    File.AppendAllText("Images/dnt.log", ex.ToString());
                 }
             }
             return count;
@@ -109,11 +123,6 @@ namespace WaterWaterWaterMark
                 {
                     Directory.CreateDirectory(savePath);
                 }
-                //日记专用
-                if (!File.Exists("dnt.log"))
-                {
-                    File.Create("dnt.log");
-                }
                 #endregion
                 var task = Task.Run(() => SetWaterMark(files, path, savePath));
                 var result = MessageBox.Show(string.Format("总共识别出 {0} 张图片，操作进行中~~~", files.Length), "逆天友情提醒~~~是否打开目录？", MessageBoxButton.YesNo);
@@ -121,14 +130,32 @@ namespace WaterWaterWaterMark
                 {
                     Process.Start("explorer.exe ", savePath);//打开保存后的路径
                 }
-
-                //Stopwatch timer = new Stopwatch();
-                //timer.Start();
-                //int count = SetWaterMark(files, path);
-                //timer.Stop();
-                //MessageBox.Show(string.Format("批量水印了 {0} 张图片！耗时： {1} s", task.Result, timer.ElapsedMilliseconds / 1000));
-
             }
+        }
+        /// <summary>
+        /// 配置文件
+        /// </summary>
+        private void initConfig()
+        {
+            string configPath = "images/config.dnt";
+            if (!File.Exists(configPath))
+            {
+                File.Create(configPath);
+            }
+            #region 读取配置文件
+            string configStr = File.ReadAllText(configPath);
+            if (configStr == null || string.IsNullOrWhiteSpace(configStr))
+            {
+                o = 4;//默认值
+            }
+            else
+            {
+                if (!double.TryParse(configStr, out o))
+                {
+                    o = 4;//默认值
+                }
+            }
+            #endregion
         }
         #endregion
 
@@ -164,6 +191,20 @@ namespace WaterWaterWaterMark
             }
             DivWaterMark(path, "DNTBlack");
         }
+        /// <summary>
+        /// 设置透明度
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            initConfig();
+            Setting settingWin = new Setting();
+            settingWin.slider.Value = o;
+            settingWin.ShowDialog();
+            initConfig();
+            MessageBox.Show("不透明度配置成功", o.ToString());
+        }
         #endregion
 
         #region 窗体拖动
@@ -181,12 +222,7 @@ namespace WaterWaterWaterMark
         }
         #endregion
 
-        #region 联系逆天
-        private void Button_Click_3(object sender, RoutedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("http://dnt.dkill.net");
-        }
-        #endregion
+
 
         #region 关闭程序
         /// <summary>
