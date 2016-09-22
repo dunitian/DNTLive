@@ -18,7 +18,7 @@ namespace WaterWaterWaterMark
         {
             try
             {
-                File.WriteAllText("images/config.dnt", Math.Floor(slider.Value).ToString());
+                File.WriteAllText("images/config.dnt", slider.Value.ToString("0.00"));
             }
             catch (Exception ex)
             {

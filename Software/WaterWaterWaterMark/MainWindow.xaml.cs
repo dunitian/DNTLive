@@ -9,9 +9,6 @@ using System.Threading.Tasks;
 
 namespace WaterWaterWaterMark
 {
-    /// <summary>
-    /// MainWindow.xaml 的交互逻辑
-    /// </summary>
     public partial class MainWindow : Window
     {
         double o;//全局变量（透明度，建议1~25）
@@ -28,17 +25,8 @@ namespace WaterWaterWaterMark
             }
             #endregion
 
-            #region 初始化
-            if (!Directory.Exists("Images"))
-            {
-                Directory.CreateDirectory("Images");
-            }
-            //日记专用
-            if (!File.Exists("Images/dnt.log"))
-            {
-                File.Create("Images/dnt.log");
-            }
-            #endregion
+            initConfig();//初始化
+            
         }
 
         #region 公用方法
@@ -137,6 +125,15 @@ namespace WaterWaterWaterMark
         /// </summary>
         private void initConfig()
         {
+            if (!Directory.Exists("Images"))
+            {
+                Directory.CreateDirectory("Images");
+            }
+            //日记专用
+            if (!File.Exists("Images/dnt.log"))
+            {
+                File.Create("Images/dnt.log");
+            }
             string configPath = "images/config.dnt";
             if (!File.Exists(configPath))
             {
@@ -198,7 +195,6 @@ namespace WaterWaterWaterMark
         /// <param name="e"></param>
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            initConfig();
             Setting settingWin = new Setting();
             settingWin.slider.Value = o;
             settingWin.ShowDialog();
@@ -221,9 +217,7 @@ namespace WaterWaterWaterMark
             }
         }
         #endregion
-
-
-
+        
         #region 关闭程序
         /// <summary>
         /// 关闭程序
