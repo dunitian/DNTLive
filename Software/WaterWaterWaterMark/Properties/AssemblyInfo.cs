@@ -8,7 +8,7 @@ using System.Windows;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("米兰批量水印 V1.1.1")]
-[assembly: AssemblyDescription("本软件为逆天专门为妹子准备，如有需求请通过妹子的授权")]
+[assembly: AssemblyDescription("本软件为逆天专门为朋友准备，如有需求请通过Ta的授权")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("逆天有限公司")]
 [assembly: AssemblyProduct("http://www.dkill.net")]
@@ -51,5 +51,5 @@ using System.Windows;
 //可以指定所有这些值，也可以使用“生成号”和“修订号”的默认值，
 // 方法是按如下所示使用“*”: :
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.1.1")]
-[assembly: AssemblyFileVersion("1.1.1.1")]
+[assembly: AssemblyVersion("1.1.1.2")]
+[assembly: AssemblyFileVersion("1.1.1.2")]
