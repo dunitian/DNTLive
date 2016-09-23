@@ -7,7 +7,7 @@ using System.Windows;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("米兰批量水印 V1.1.1")]
+[assembly: AssemblyTitle("逆天批量水印 V1.1.1")]
 [assembly: AssemblyDescription("本软件为逆天专门为朋友准备，如有需求请通过Ta的授权")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("逆天有限公司")]
