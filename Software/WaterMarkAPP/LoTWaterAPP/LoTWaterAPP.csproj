@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{56DC276D-4EC9-48B1-A0BA-CD53BA740396}</ProjectGuid>
+    <ProjectGuid>{071F25EF-0676-453F-82A4-D816CCEC0088}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LoTWaterAPP</RootNamespace>
