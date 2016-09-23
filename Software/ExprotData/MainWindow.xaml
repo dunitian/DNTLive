@@ -1,0 +1,44 @@
+﻿<Window x:Class="ExprotData.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ExprotData"
+        mc:Ignorable="d" Title="水印工具" Height="545" Width="298" Background="Transparent" AllowsTransparency="True" 
+        WindowStyle="None" WindowStartupLocation="CenterScreen" MouseLeftButtonDown="DragWindow" Icon="1.ico">
+    <Border BorderBrush="Green" Background="Black" BorderThickness="4" CornerRadius="10,10,10,10">
+        <Grid>
+            <!--主屏幕-->
+            <Border BorderBrush="Gray" 
+                BorderThickness="2"
+                Margin="10,50,10,40">
+                <Grid Background="#FF0C0B0B">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock FontFamily="微软雅黑">对不起，系统已挂请联系逆天重装Win10！</TextBlock>
+                    <Button Grid.Row="0" Opacity="0.6"  Background="Transparent" BorderBrush="#FFBD73E8" Foreground="#FFBD73E8" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="200" FontSize="22" Click="Button_Click_1">文 件 导 入 咯</Button>
+                    <Button Grid.Row="1" Opacity="0.6"  Background="Transparent" BorderBrush="#FFC0C000" Foreground="#FFC0C000" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="200" FontSize="22" Click="Button_Click_2">数 据 导 出 呀</Button>
+                    <Button Grid.Row="2" Opacity="0.6"  Background="Transparent" BorderBrush="#FF00C000" Foreground="#FF00C000" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="200" FontSize="22" Click="Button_Click_3">有 新 需 求 了</Button>
+                    <Button Grid.Row="3" Opacity="0.6"  Background="Transparent" BorderBrush="#FF00C0C0" Foreground="#FF00C0C0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="200" FontSize="22" Click="Button_Click">程 序 说 拜 拜</Button>
+                </Grid>
+            </Border>
+            <!--底部-->
+            <Border BorderBrush="Black" 
+                BorderThickness="2"
+                CornerRadius="0,0,10,10"
+                VerticalAlignment="Bottom"
+                Height="40">
+                <!--底部按键-->
+                <Grid>
+                    <TextBlock Text="毒"  Width="20" FontSize="14" Foreground="#FFC0C000" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="80,0,0,0"/>
+                    <TextBlock Text="逆"  Width="20" FontSize="14" Foreground="#FFC0C000" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBlock Text="天"  Width="20" FontSize="14" Foreground="#FFC0C000" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,80,0"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
