@@ -36,7 +36,7 @@
                 VerticalAlignment="Bottom"
                 Height="40">
                 <!--底部按键-->
-                <Grid MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+                <Grid>
                     <TextBlock Text="毒"  Width="20" FontSize="14" Foreground="#FFC0C000" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="80,0,0,0"/>
                     <TextBlock Text="逆"  Width="20" FontSize="14" Foreground="#FFC0C000" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     <TextBlock Text="天"  Width="20" FontSize="14" Foreground="#FFC0C000" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,80,0"/>

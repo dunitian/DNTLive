@@ -57,17 +57,7 @@ namespace WaterMarkAPP
                     Application.Current.Shutdown();
                 }
             }
-        }
-
-        /// <summary>
-        /// 配置信息
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            AppSetting.GetAppSetting().ShowDialog();
-        }
+        }       
         #endregion
 
         #region 按钮事件
