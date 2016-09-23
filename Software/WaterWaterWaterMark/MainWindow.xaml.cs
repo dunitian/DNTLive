@@ -125,6 +125,12 @@ namespace WaterWaterWaterMark
         /// </summary>
         private void initConfig()
         {
+            if (!File.Exists("Magick.NET-Q8-AnyCPU.dll"))
+            {
+                MessageBox.Show("Magick.NET-Q8-AnyCPU.dll不存在！","文件缺失的提示");
+                return;
+            }
+
             if (!Directory.Exists("Images"))
             {
                 Directory.CreateDirectory("Images");
