@@ -26,7 +26,7 @@ namespace WaterWaterWaterMark
             #endregion
 
             initConfig();//初始化
-            
+
         }
 
         #region 公用方法
@@ -116,7 +116,8 @@ namespace WaterWaterWaterMark
                 var result = MessageBox.Show(string.Format("总共识别出 {0} 张图片，操作进行中~~~", files.Length), "逆天友情提醒~~~是否打开目录？", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
-                    Process.Start("explorer.exe ", savePath);//打开保存后的路径
+                    //Process.Start("explorer.exe ", savePath);//打开保存后的路径
+                    MessageBox.Show($"简化版本不能打开文件夹，请手动打开路径：\n{savePath}", "360误报提醒");
                 }
             }
         }
@@ -127,7 +128,7 @@ namespace WaterWaterWaterMark
         {
             if (!File.Exists("Magick.NET-Q8-AnyCPU.dll"))
             {
-                MessageBox.Show("Magick.NET-Q8-AnyCPU.dll不存在！","文件缺失的提示");
+                MessageBox.Show("Magick.NET-Q8-AnyCPU.dll不存在！", "文件缺失的提示");
                 return;
             }
 
@@ -223,7 +224,7 @@ namespace WaterWaterWaterMark
             }
         }
         #endregion
-        
+
         #region 关闭程序
         /// <summary>
         /// 关闭程序
