@@ -1,5 +1,11 @@
 ﻿namespace WMAPP.Models
 {
+    /// <summary>
+    /// 作者：dunitian
+    /// 时间：2016年12月23日 10:40
+    /// 标题：错误信息
+    /// 描述：返回的错误信息
+    /// </summary>
     public partial class ErrorModel
     {
         /// <summary>

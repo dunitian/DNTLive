@@ -1,13 +1,11 @@
 ﻿using System;
 using System.IO;
-using ImageMagick;
 using System.Linq;
+using ImageMagick;
 using System.Windows;
-using System.Windows.Input;
 using System.Diagnostics;
+using System.Windows.Input;
 using System.Threading.Tasks;
-using System.Net.Http;
-using System.Text;
 
 namespace WaterWaterWaterMark
 {
@@ -50,7 +48,10 @@ namespace WaterWaterWaterMark
                     #region 水印
                     //todo:找人脸
                     var list = FaceHelper.GetFaceModelList().Result;
-
+                    foreach (var item in list)
+                    {
+                        item.FaceRectangLe.
+                    }
                     //原图
                     using (var image = new MagickImage(imgPaths[k]))
                     {

@@ -109,8 +109,8 @@
     <Compile Include="Common\JsonHelper.cs" />
     <Compile Include="Exception\FaceException.cs" />
     <Compile Include="Models\ErrorModel.cs" />
+    <Compile Include="Models\FaceFourKey.cs" />
     <Compile Include="Models\FaceModel.cs" />
-    <Compile Include="Models\FaceRectangle.cs" />
     <Compile Include="Models\FaceRectangleModel.cs" />
     <Compile Include="Setting.xaml.cs">
       <DependentUpon>Setting.xaml</DependentUpon>
