@@ -44,50 +44,41 @@ namespace WaterWaterWaterMark
             client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", apiKey);
 
             //请求参数
-            var url = "https://api.projectoxford.ai/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false";
+            var postUrl = "https://api.projectoxford.ai/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false";
 
             //请求API
-            using (var content = GetContent(imgPath))
-            {
-                return await client.PostAsync(url, content);
-            }
-        }
-
-        /// <summary>
-        /// 不同地址对应不同处理
-        /// </summary>
-        /// <param name="imgPath"></param>
-        /// <returns></returns>
-        private static HttpContent GetContent(string imgPath)
-        {
+            #region 请求API
+            //不同地址对应不同处理
+            bool isUrl = false;
             if (imgPath.StartsWith("http"))
             {
-                byte[] bytesData = System.Text.Encoding.UTF8.GetBytes(string.Format("{url:'{0}'}", imgPath));
-                var content = new ByteArrayContent(bytesData);
-                //内容类型
-                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                return content;
+                isUrl = true;
             }
             else
             {
-                //var content = new ByteArrayContent(File.ReadAllBytes(imgPath));
-                //content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-                //{
-                //    FileName = Path.GetFileName(imgPath)
-                //};
-                var content = new ByteArrayContent(File.ReadAllBytes(imgPath));
-                //内容类型
-                content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                return content;
-                //var fs = new System.IO.FileStream(imgPath, System.IO.FileMode.Open, System.IO.FileAccess.Read);
-                //{
-                //    byte[] buffByte = new byte[fs.Length];
-                //    fs.Read(buffByte, 0, (int)fs.Length);
-                //    return new StreamContent(fs);
-                //}
             }
+            //Body
+            if (isUrl)
+            {
+                var bytesData = System.Text.Encoding.UTF8.GetBytes(string.Format("{url:'{0}'}", imgPath));
+                using (var content = new ByteArrayContent(bytesData))
+                {
+                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    return await client.PostAsync(postUrl, content);
+                }
+            }
+            else
+            {
+                var bytesData = File.ReadAllBytes(imgPath);
+                using (var content = new ByteArrayContent(bytesData))
+                {
+                    content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                    return await client.PostAsync(postUrl, content);
+                }
+            } 
+            #endregion
         }
-
+        
         /// <summary>
         /// 获取一组图片里面的FaceModelList
         /// 可能错误为：FaceException
