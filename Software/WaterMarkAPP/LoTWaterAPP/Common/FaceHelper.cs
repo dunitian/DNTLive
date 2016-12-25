@@ -31,8 +31,10 @@ namespace WaterWaterWaterMark
         /// <summary>
         /// 在线调用API，返回对应结果
         /// </summary>
+        /// <param name="apiKey">APIKey</param>
+        /// <param name="byteData">byte[]类型，请求主体（可以是图片URL的json格式，也可以是图片类型）</param>
         /// <returns></returns>
-        public static async Task<HttpResponseMessage> GetFaceKey(string apiKey)
+        public static async Task<HttpResponseMessage> GetFaceKey(string apiKey, byte[] byteData)
         {
             var client = new HttpClient();
             //请求头
@@ -40,9 +42,6 @@ namespace WaterWaterWaterMark
 
             //请求参数
             var url = "https://api.projectoxford.ai/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false";
-
-            //请求主体（可以是图片URL的json格式，也可以是图片类型）
-            byte[] byteData = System.Text.Encoding.UTF8.GetBytes("{url:'https://images2015.cnblogs.com/blog/658978/201609/658978-20160922111329527-2030285818.png'}");
 
             using (var content = new ByteArrayContent(byteData))
             {
@@ -57,8 +56,9 @@ namespace WaterWaterWaterMark
         /// 可能错误为：FaceException
         /// 默认：在配置文件中随机获取配置的API
         /// </summary>
+        /// <param name="byteData">byte[]类型，请求主体（可以是图片URL的json格式，也可以是图片类型）</param>
         /// <returns></returns>
-        public static async Task<IEnumerable<FaceModel>> GetFaceModelList()
+        public static async Task<IEnumerable<FaceModel>> GetFaceModelList(byte[] byteData)
         {
             if (apiKeys == null || apiKeys.Count == 0)
             {
@@ -69,7 +69,7 @@ namespace WaterWaterWaterMark
             string apiKey = GetAPIKey();
 
             //获取Response
-            var response = await GetFaceKey(apiKey);
+            var response = await GetFaceKey(apiKey, byteData);
 
             //获取返回字符串
             string result = await response.Content.ReadAsStringAsync();
@@ -86,19 +86,25 @@ namespace WaterWaterWaterMark
                     return await result.JsonToModelsAsync<IEnumerable<FaceModel>>();
                 //Response 400
                 case System.Net.HttpStatusCode.BadRequest:
-                    var errorModel = await result.JsonToModelsAsync<ErrorModel>();
-                    switch (errorModel.Code)
+                    if (result.Contains("BadArgument"))
                     {
-                        case "BadArgument":
-                            throw new FaceException("请求Json格式出错 or ReturnFaceAttributes（参数间逗号分隔）");
-                        case "InvalidURL":
-                            throw new FaceException("图片链接无效 or 无效的图片格式（格式尽量用：JPG，PNG，Gif等常用格式）");
-                        case "InvalidImage":
-                            throw new FaceException("解码错误,图片格式不受支持或非正常图片（可能是伪造图片）");
-                        case "InvalidImageSize":
-                            throw new FaceException("图片大小或者太大（大小：1k ~ 4M）");
-                        default:
-                            throw new FaceException("请求出错，请检测图片，请求Json或者请求报文");
+                        throw new FaceException("请求Json格式出错 or ReturnFaceAttributes（参数间逗号分隔）");
+                    }
+                    else if (result.Contains("InvalidURL"))
+                    {
+                        throw new FaceException("图片链接无效 or 无效的图片格式（格式尽量用：JPG，PNG，Gif等常用格式）");
+                    }
+                    else if (result.Contains("InvalidImage"))
+                    {
+                        throw new FaceException("解码错误,图片格式不受支持或非正常图片（可能是伪造图片）");
+                    }
+                    else if (result.Contains("InvalidImageSize"))
+                    {
+                        throw new FaceException("图片大小或者太大（大小：1k ~ 4M）");
+                    }
+                    else
+                    {
+                        throw new FaceException("请求出错，请检测图片，请求Json或者请求报文");
                     }
                 //Response 401
                 case System.Net.HttpStatusCode.Unauthorized:
