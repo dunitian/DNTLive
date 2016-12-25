@@ -50,7 +50,7 @@ namespace WaterWaterWaterMark
                     var list = FaceHelper.GetFaceModelList(imgPaths[k]).Result;
                     foreach (var item in list)
                     {
-                        
+                        //todo:具体实现
                     }
                     //原图
                     using (var image = new MagickImage(imgPaths[k]))
