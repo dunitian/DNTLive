@@ -6,6 +6,8 @@ using System.Windows;
 using System.Windows.Input;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Net.Http;
+using System.Text;
 
 namespace WaterWaterWaterMark
 {
@@ -28,6 +30,39 @@ namespace WaterWaterWaterMark
             initConfig();//初始化
 
         }
+        #region 人脸识别
+        /// <summary>
+        /// 在线人脸识别并返回对应值
+        /// </summary>
+        /// <param name="imagePath"></param>
+        /// <returns></returns>
+        private static async Task<HttpResponseMessage> GetAPIResult(string imagePath)
+        {
+            var client = new HttpClient();
+            //请求头
+            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "827ed8461d9b4b649fc4c111d7cd7f75");
+            //请求地址
+            string url = "https://api.projectoxford.ai/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=true";
+            //请求主体（可以是图片URL的json格式，也可以是图片类型）
+            byte[] byteData = Encoding.UTF8.GetBytes(string.Format("{url:'{0}'}", imagePath));
+
+            using (var content = new ByteArrayContent(byteData))
+            {
+                return await client.PostAsync(url, content);
+            }
+        }
+        /// <summary>
+        /// 对返回值进行整理分析
+        /// </summary>
+        /// <param name="imagePath"></param>
+        /// <returns></returns>
+        private object GetFaceKey(string imagePath)
+        {
+            var response = GetAPIResult(imagePath).Result;
+
+            return new object();
+        }
+        #endregion
 
         #region 公用方法
         /// <summary>
@@ -47,6 +82,9 @@ namespace WaterWaterWaterMark
                 try
                 {
                     #region 水印
+                    //todo:找人脸
+                    var obj = GetFaceKey(imgPaths[k]);
+
                     //原图
                     using (var image = new MagickImage(imgPaths[k]))
                     {
@@ -84,6 +122,12 @@ namespace WaterWaterWaterMark
             }
             return count;
         }
+
+        /// <summary>
+        /// 批量水印
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="dicName"></param>
         private void DivWaterMark(string path, string dicName)
         {
             System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog
