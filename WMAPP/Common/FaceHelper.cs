@@ -1,11 +1,19 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
 using WMAPP.Models;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Net.Http.Headers;
 using System.Collections.Generic;
 
 namespace WMAPP
 {
+    /// <summary>
+    /// 作者：dunitian
+    /// 时间：2016年12月23日 10:40
+    /// 标题：微软人脸识别API的专用工具类
+    /// </summary>
     public abstract partial class FaceHelper
     {
         /// <summary>
@@ -13,47 +21,73 @@ namespace WMAPP
         /// </summary>
         protected static List<string> apiKeys = System.Configuration.ConfigurationManager.AppSettings.AllKeys.Where(key => key.Contains("Facekey")).Select(key => System.Configuration.ConfigurationManager.AppSettings[key]).ToList();
 
+        #region 随机获取APIKey
         /// <summary>
         /// 随机获取APIKey
         /// </summary>
         /// <returns></returns>
         protected static string GetAPIKey()
         {
-            int index = new System.Random().Next(0, apiKeys.Count());
+            int index = new Random().Next(0, apiKeys.Count());
             return apiKeys[index];
         }
+        #endregion
 
+        #region 在线调用API，返回对应结果
         /// <summary>
         /// 在线调用API，返回对应结果
         /// </summary>
+        /// <param name="apiKey">APIKey</param>
+        /// <param name="imgPath">图片URL地址或者图片本地地址</param>
         /// <returns></returns>
-        public static async Task<HttpResponseMessage> GetFaceKey(string apiKey)
+        public static async Task<HttpResponseMessage> GetFaceKey(string apiKey, string imgPath)
         {
             var client = new HttpClient();
             //请求头
             client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", apiKey);
-
             //请求参数
-            var url = "https://api.projectoxford.ai/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false";
+            var postUrl = "https://api.projectoxford.ai/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false";
 
-            //请求主体（可以是图片URL的json格式，也可以是图片类型）
-            byte[] byteData = System.Text.Encoding.UTF8.GetBytes("{url:'https://images2015.cnblogs.com/blog/658978/201609/658978-20160922111329527-2030285818.png'}");
-
-            using (var content = new ByteArrayContent(byteData))
+            #region 请求API
+            //不同地址对应不同处理
+            bool isUrl = false;
+            if (imgPath.StartsWith("http"))
             {
-                //内容类型
-                content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-                return await client.PostAsync(url, content);
+                isUrl = true;
             }
+            //Body 发json还是流
+            if (isUrl)
+            {
+                string jsonStr = await new { url = imgPath }.ObjectToJsonAsync();
+                var bytesData = System.Text.Encoding.UTF8.GetBytes(jsonStr);
+                using (var content = new ByteArrayContent(bytesData))
+                {
+                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    return await client.PostAsync(postUrl, content);
+                }
+            }
+            else
+            {
+                var bytesData = File.ReadAllBytes(imgPath);
+                using (var content = new ByteArrayContent(bytesData))
+                {
+                    content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                    return await client.PostAsync(postUrl, content);
+                }
+            }
+            #endregion
         }
+        #endregion
 
+        #region 获取一组图片里面的FaceModelList
         /// <summary>
         /// 获取一组图片里面的FaceModelList
         /// 可能错误为：FaceException
         /// 默认：在配置文件中随机获取配置的API
         /// </summary>
+        /// <param name="imgPath">图片URL地址或者图片本地地址</param>
         /// <returns></returns>
-        public static async Task<IEnumerable<FaceModel>> GetFaceModelList()
+        public static async Task<IEnumerable<FaceModel>> GetFaceModelList(string imgPath)
         {
             if (apiKeys == null || apiKeys.Count == 0)
             {
@@ -64,7 +98,7 @@ namespace WMAPP
             string apiKey = GetAPIKey();
 
             //获取Response
-            var response = await GetFaceKey(apiKey);
+            var response = await GetFaceKey(apiKey, imgPath);
 
             //获取返回字符串
             string result = await response.Content.ReadAsStringAsync();
@@ -81,19 +115,25 @@ namespace WMAPP
                     return await result.JsonToModelsAsync<IEnumerable<FaceModel>>();
                 //Response 400
                 case System.Net.HttpStatusCode.BadRequest:
-                    var errorModel = await result.JsonToModelsAsync<ErrorModel>();
-                    switch (errorModel.Code)
+                    if (result.Contains("BadArgument"))
                     {
-                        case "BadArgument":
-                            throw new FaceException("请求Json格式出错 or ReturnFaceAttributes（参数间逗号分隔）");
-                        case "InvalidURL":
-                            throw new FaceException("图片链接无效 or 无效的图片格式（格式尽量用：JPG，PNG，Gif等常用格式）");
-                        case "InvalidImage":
-                            throw new FaceException("解码错误,图片格式不受支持或非正常图片（可能是伪造图片）");
-                        case "InvalidImageSize":
-                            throw new FaceException("图片大小或者太大（大小：1k ~ 4M）");
-                        default:
-                            throw new FaceException("请求出错，请检测图片，请求Json或者请求报文");
+                        throw new FaceException("请求Json格式出错 or ReturnFaceAttributes（参数间逗号分隔）");
+                    }
+                    else if (result.Contains("InvalidURL"))
+                    {
+                        throw new FaceException("图片链接无效 or 无效的图片格式（格式尽量用：JPG，PNG，Gif等常用格式）");
+                    }
+                    else if (result.Contains("InvalidImage"))
+                    {
+                        throw new FaceException("解码错误,图片格式不受支持或非正常图片（可能是伪造图片）");
+                    }
+                    else if (result.Contains("InvalidImageSize"))
+                    {
+                        throw new FaceException("图片大小或者太大（大小：1k ~ 4M）");
+                    }
+                    else
+                    {
+                        throw new FaceException("请求出错，请检测图片，请求Json或者请求报文");
                     }
                 //Response 401
                 case System.Net.HttpStatusCode.Unauthorized:
@@ -113,5 +153,6 @@ namespace WMAPP
             }
             #endregion
         }
+        #endregion
     }
 }

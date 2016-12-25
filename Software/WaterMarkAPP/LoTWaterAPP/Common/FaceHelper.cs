@@ -1,11 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
 using WMAPP.Models;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using System;
 using System.Net.Http.Headers;
-using System.IO;
+using System.Collections.Generic;
 
 namespace WaterWaterWaterMark
 {
@@ -21,6 +21,7 @@ namespace WaterWaterWaterMark
         /// </summary>
         protected static List<string> apiKeys = System.Configuration.ConfigurationManager.AppSettings.AllKeys.Where(key => key.Contains("Facekey")).Select(key => System.Configuration.ConfigurationManager.AppSettings[key]).ToList();
 
+        #region 随机获取APIKey
         /// <summary>
         /// 随机获取APIKey
         /// </summary>
@@ -29,8 +30,10 @@ namespace WaterWaterWaterMark
         {
             int index = new Random().Next(0, apiKeys.Count());
             return apiKeys[index];
-        }
+        } 
+        #endregion
 
+        #region 在线调用API，返回对应结果
         /// <summary>
         /// 在线调用API，返回对应结果
         /// </summary>
@@ -42,11 +45,9 @@ namespace WaterWaterWaterMark
             var client = new HttpClient();
             //请求头
             client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", apiKey);
-
             //请求参数
             var postUrl = "https://api.projectoxford.ai/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false";
 
-            //请求API
             #region 请求API
             //不同地址对应不同处理
             bool isUrl = false;
@@ -54,13 +55,11 @@ namespace WaterWaterWaterMark
             {
                 isUrl = true;
             }
-            else
-            {
-            }
-            //Body
+            //Body 发json还是流
             if (isUrl)
             {
-                var bytesData = System.Text.Encoding.UTF8.GetBytes(string.Format("{url:'{0}'}", imgPath));
+                string jsonStr = await new { url = imgPath }.ObjectToJsonAsync();
+                var bytesData = System.Text.Encoding.UTF8.GetBytes(jsonStr);
                 using (var content = new ByteArrayContent(bytesData))
                 {
                     content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
@@ -75,10 +74,12 @@ namespace WaterWaterWaterMark
                     content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
                     return await client.PostAsync(postUrl, content);
                 }
-            } 
+            }
             #endregion
-        }
-        
+        } 
+        #endregion
+
+        #region 获取一组图片里面的FaceModelList
         /// <summary>
         /// 获取一组图片里面的FaceModelList
         /// 可能错误为：FaceException
@@ -151,6 +152,7 @@ namespace WaterWaterWaterMark
                     throw new FaceException("请求频率太高，稍作休息可否？如急用请联系开发者");
             }
             #endregion
-        }
+        } 
+        #endregion
     }
 }
