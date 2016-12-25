@@ -5,29 +5,13 @@
 </head>
 <body>
     <div id="main">
-
+        @ViewBag.ErrorInfo
     </div>
     <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" async></script>
     <script type="text/javascript">
         $(function () {
-            $.ajax({
-                url: "https://api.projectoxford.ai/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=true",
-                beforeSend: function (xhrObj) {
-                    xhrObj.setRequestHeader("Content-Type", "application/json");
-                    xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", "51580d059b934b7f93496b2064850ff9");
-                },
-                type: "POST",
-                data: { "url": "https://images2015.cnblogs.com/blog/658978/201609/658978-20160922111329527-2030285818.png" },
-            })
-            .done(function (data) {
-                //成功
-                $('#main').html(msg);
-            })
-            .fail(function (msg) {
-                //失败
-                $('#main').html(msg);
-            });
+            
         });
     </script>
 </body>

@@ -7,7 +7,17 @@ namespace WMAPP.Controllers
     {
         public async Task<ActionResult> Index()
         {
-            var list = await FaceHelper.GetFaceModelList();
+            try
+            {
+                var list = await FaceHelper.GetFaceModelList();
+
+            }
+            catch (FaceException ex)
+            {
+                ViewBag.ErrorInfo = ex.Message;
+            }
+
+
             return View();
         }
 

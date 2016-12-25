@@ -1,24 +1,40 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using WMAPP.Models;
 using System.Net.Http;
 using System.Threading.Tasks;
-using WMAPP.Models;
+using System.Collections.Generic;
 
 namespace WMAPP
 {
-    public abstract partial  class FaceHelper
+    public abstract partial class FaceHelper
     {
+        /// <summary>
+        /// 获取配置文件中所有的APIKey
+        /// </summary>
+        public static List<string> apiKeys = System.Configuration.ConfigurationManager.AppSettings.AllKeys.Where(key => key.Contains("Facekey")).Select(key => System.Configuration.ConfigurationManager.AppSettings[key]).ToList();
+
+        /// <summary>
+        /// 随机获取APIKey
+        /// </summary>
+        /// <returns></returns>
+        protected static string GetAPIKey()
+        {
+            int index = new System.Random().Next(0, apiKeys.Count());
+            return apiKeys[index];
+        }
+
         /// <summary>
         /// 在线调用API，返回对应结果
         /// </summary>
         /// <returns></returns>
-        public static async Task<HttpResponseMessage> GetFaceKey()
+        public static async Task<HttpResponseMessage> GetFaceKey(string apiKey)
         {
             var client = new HttpClient();
             //请求头
-            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "827ed8461d9b4b649fc4c111d7cd7f75");
+            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", apiKey);
 
             //请求参数
-            var uri = "https://api.projectoxford.ai/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false";
+            var url = "https://api.projectoxford.ai/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false";
 
             //请求主体（可以是图片URL的json格式，也可以是图片类型）
             byte[] byteData = System.Text.Encoding.UTF8.GetBytes("{url:'https://images2015.cnblogs.com/blog/658978/201609/658978-20160922111329527-2030285818.png'}");
@@ -27,19 +43,28 @@ namespace WMAPP
             {
                 //内容类型
                 content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-                return await client.PostAsync(uri, content);
+                return await client.PostAsync(url, content);
             }
         }
 
         /// <summary>
-        /// 获取FaceModelList
+        /// 获取一组图片里面的FaceModelList
         /// 可能错误为：FaceException
         /// </summary>
+        /// <param name="b">是否在配置文件中随机获取配置的API</param>
         /// <returns></returns>
-        public static async Task<IEnumerable<FaceModel>> GetFaceModelList()
+        public static async Task<IEnumerable<FaceModel>> GetFaceModelList(bool b = true)
         {
+            if (apiKeys == null || apiKeys.Count == 0)
+            {
+                throw new FaceException("请在Config配置一个或多个有效的APIKey");
+            }
+
+            //随机获取APIKey
+            string apiKey = GetAPIKey();
+
             //获取Response
-            var response = await GetFaceKey();
+            var response = await GetFaceKey(apiKey);
 
             //获取返回字符串
             string result = await response.Content.ReadAsStringAsync();
@@ -72,7 +97,7 @@ namespace WMAPP
                     }
                 //Response 401
                 case System.Net.HttpStatusCode.Unauthorized:
-                    throw new FaceException("你的开发Key可能已经失效，请联系开发者");
+                    throw new FaceException($"你的开发Key可能已经失效，请联系开发者（当前Key:{apiKey}）");
                 //Response 403
                 case System.Net.HttpStatusCode.Forbidden:
                     throw new FaceException("你太猛了已经超过了本月分配的额度了！如想继续使用请联系开发者");
