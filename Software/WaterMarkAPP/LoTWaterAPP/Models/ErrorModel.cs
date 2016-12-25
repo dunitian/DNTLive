@@ -1,4 +1,4 @@
-﻿namespace WaterWaterWaterMark.Models
+﻿namespace WMAPP.Models
 {
     public partial class ErrorModel
     {

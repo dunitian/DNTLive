@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Common\FaceHelper.cs" />
     <Compile Include="Common\JsonHelper.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Exception\FaceException.cs" />
