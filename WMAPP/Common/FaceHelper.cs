@@ -11,7 +11,7 @@ namespace WMAPP
         /// <summary>
         /// 获取配置文件中所有的APIKey
         /// </summary>
-        public static List<string> apiKeys = System.Configuration.ConfigurationManager.AppSettings.AllKeys.Where(key => key.Contains("Facekey")).Select(key => System.Configuration.ConfigurationManager.AppSettings[key]).ToList();
+        protected static List<string> apiKeys = System.Configuration.ConfigurationManager.AppSettings.AllKeys.Where(key => key.Contains("Facekey")).Select(key => System.Configuration.ConfigurationManager.AppSettings[key]).ToList();
 
         /// <summary>
         /// 随机获取APIKey
@@ -50,10 +50,10 @@ namespace WMAPP
         /// <summary>
         /// 获取一组图片里面的FaceModelList
         /// 可能错误为：FaceException
+        /// 默认：在配置文件中随机获取配置的API
         /// </summary>
-        /// <param name="b">是否在配置文件中随机获取配置的API</param>
         /// <returns></returns>
-        public static async Task<IEnumerable<FaceModel>> GetFaceModelList(bool b = true)
+        public static async Task<IEnumerable<FaceModel>> GetFaceModelList()
         {
             if (apiKeys == null || apiKeys.Count == 0)
             {
