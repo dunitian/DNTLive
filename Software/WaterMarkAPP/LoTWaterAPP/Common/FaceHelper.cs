@@ -3,6 +3,9 @@ using WMAPP.Models;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System;
+using System.Net.Http.Headers;
+using System.IO;
 
 namespace WaterWaterWaterMark
 {
@@ -24,7 +27,7 @@ namespace WaterWaterWaterMark
         /// <returns></returns>
         protected static string GetAPIKey()
         {
-            int index = new System.Random().Next(0, apiKeys.Count());
+            int index = new Random().Next(0, apiKeys.Count());
             return apiKeys[index];
         }
 
@@ -32,9 +35,9 @@ namespace WaterWaterWaterMark
         /// 在线调用API，返回对应结果
         /// </summary>
         /// <param name="apiKey">APIKey</param>
-        /// <param name="byteData">byte[]类型，请求主体（可以是图片URL的json格式，也可以是图片类型）</param>
+        /// <param name="imgPath">图片URL地址或者图片本地地址</param>
         /// <returns></returns>
-        public static async Task<HttpResponseMessage> GetFaceKey(string apiKey, byte[] byteData)
+        public static async Task<HttpResponseMessage> GetFaceKey(string apiKey, string imgPath)
         {
             var client = new HttpClient();
             //请求头
@@ -43,11 +46,45 @@ namespace WaterWaterWaterMark
             //请求参数
             var url = "https://api.projectoxford.ai/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false";
 
-            using (var content = new ByteArrayContent(byteData))
+            //请求API
+            using (var content = GetContent(imgPath))
             {
-                //内容类型
-                content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
                 return await client.PostAsync(url, content);
+            }
+        }
+
+        /// <summary>
+        /// 不同地址对应不同处理
+        /// </summary>
+        /// <param name="imgPath"></param>
+        /// <returns></returns>
+        private static HttpContent GetContent(string imgPath)
+        {
+            if (imgPath.StartsWith("http"))
+            {
+                byte[] bytesData = System.Text.Encoding.UTF8.GetBytes(string.Format("{url:'{0}'}", imgPath));
+                var content = new ByteArrayContent(bytesData);
+                //内容类型
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return content;
+            }
+            else
+            {
+                //var content = new ByteArrayContent(File.ReadAllBytes(imgPath));
+                //content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+                //{
+                //    FileName = Path.GetFileName(imgPath)
+                //};
+                var content = new ByteArrayContent(File.ReadAllBytes(imgPath));
+                //内容类型
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                return content;
+                //var fs = new System.IO.FileStream(imgPath, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+                //{
+                //    byte[] buffByte = new byte[fs.Length];
+                //    fs.Read(buffByte, 0, (int)fs.Length);
+                //    return new StreamContent(fs);
+                //}
             }
         }
 
@@ -56,9 +93,9 @@ namespace WaterWaterWaterMark
         /// 可能错误为：FaceException
         /// 默认：在配置文件中随机获取配置的API
         /// </summary>
-        /// <param name="byteData">byte[]类型，请求主体（可以是图片URL的json格式，也可以是图片类型）</param>
+        /// <param name="imgPath">图片URL地址或者图片本地地址</param>
         /// <returns></returns>
-        public static async Task<IEnumerable<FaceModel>> GetFaceModelList(byte[] byteData)
+        public static async Task<IEnumerable<FaceModel>> GetFaceModelList(string imgPath)
         {
             if (apiKeys == null || apiKeys.Count == 0)
             {
@@ -69,7 +106,7 @@ namespace WaterWaterWaterMark
             string apiKey = GetAPIKey();
 
             //获取Response
-            var response = await GetFaceKey(apiKey, byteData);
+            var response = await GetFaceKey(apiKey, imgPath);
 
             //获取返回字符串
             string result = await response.Content.ReadAsStringAsync();

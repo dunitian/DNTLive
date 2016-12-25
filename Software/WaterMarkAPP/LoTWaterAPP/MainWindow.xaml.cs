@@ -47,7 +47,7 @@ namespace WaterWaterWaterMark
                 {
                     #region 水印
                     //todo:找人脸 System.Text.Encoding.UTF8.GetBytes("{url:'https://images2015.cnblogs.com/blog/658978/201609/658978-20160922111329527-2030285818.png'}");
-                    var list = FaceHelper.GetFaceModelList(File.ReadAllBytes(imgPaths[k])).Result;
+                    var list = FaceHelper.GetFaceModelList(imgPaths[k]).Result;
                     foreach (var item in list)
                     {
                         
