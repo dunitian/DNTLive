@@ -30,6 +30,91 @@ namespace WaterWaterWaterMark
         }
         #region 公用方法
         /// <summary>
+        /// 设置水印--识别人脸
+        /// </summary>
+        /// <param name="imgPaths"></param>
+        /// <param name="waterImgPath"></param>
+        /// <returns></returns>
+        private int SetWaterMarkFace(string[] imgPaths, string waterImgPath, string savePath)
+        {
+            int count = 0;
+
+            for (int k = 0; k < imgPaths.Length; k++)
+            {
+                //文件名
+                string fileName = Path.GetFileName(imgPaths[k]);
+                try
+                {
+                    #region 水印
+                    var list = FaceHelper.GetFaceModelList(imgPaths[k]).Result;
+
+                    //原图
+                    using (var image = new MagickImage(imgPaths[k]))
+                    {
+                        int imgWidth = image.Width;
+                        int imgHeight = image.Height;
+
+                        #region 单个水印图
+                        using (var waterimg = new MagickImage(waterImgPath))
+                        {
+                            int smallWidth = waterimg.Width;
+                            int smallHeight = waterimg.Height;
+
+                            int x = Convert.ToInt32(Math.Ceiling(imgWidth * 1.0 / smallWidth));
+                            int y = Convert.ToInt32(Math.Ceiling(imgHeight * 1.0 / smallHeight));
+
+                            //透明度（1~100，越大水印越淡）
+                            waterimg.Evaluate(Channels.Alpha, EvaluateOperator.Divide, o);
+                            for (int i = 0; i < x; i++)
+                            {
+                                for (int j = 0; j < y; j++)
+                                {
+                                    image.Composite(waterimg, i * smallWidth, j * smallHeight, CompositeOperator.Over);//水印
+                                }
+                            }
+                        }
+                        #endregion
+
+                        #region 裁剪脸部并还原 2016-12-26
+                        //原图
+                        using (var magickImg = new MagickImage(imgPaths[k]))
+                        {
+                            foreach (var item in list)
+                            {
+                                #region 调整信息
+                                if (item.FaceRectangLe == null)
+                                    continue;
+                                //在原有基础上宽高各*2（PS:我们所谓的不水印脸上其实更多意义在"头"）
+                                int addWidth = item.FaceRectangLe.Width / 2;
+                                int addHeight = item.FaceRectangLe.Height / 2;
+                                //新的宽高
+                                item.FaceRectangLe.Width *= 2;
+                                item.FaceRectangLe.Height *= 2;
+                                //新的左顶点坐标（newX,newY）【PS:不用担心负数问题，Model已经约束了】
+                                item.FaceRectangLe.Left -= addWidth;
+                                item.FaceRectangLe.Top -= addHeight;
+                                #endregion
+                                //裁剪
+                                magickImg.Crop(item.FaceRectangLe.Left, item.FaceRectangLe.Top, item.FaceRectangLe.Width, item.FaceRectangLe.Height);
+                                //还原脸
+                                image.Composite(magickImg, item.FaceRectangLe.Left, item.FaceRectangLe.Top, CompositeOperator.Over);
+                            }
+                        }
+                        #endregion
+
+                        image.Write(string.Format(@"{0}\{1}", savePath, fileName));
+                        count++;
+                    }
+                    #endregion
+                }
+                catch (Exception ex)
+                {
+                    File.AppendAllText("Images/dnt.log", ex.ToString());
+                }
+            }
+            return count;
+        }
+        /// <summary>
         /// 设置水印
         /// </summary>
         /// <param name="imgPaths"></param>
@@ -46,11 +131,6 @@ namespace WaterWaterWaterMark
                 try
                 {
                     #region 水印
-                    var list = FaceHelper.GetFaceModelList(imgPaths[k]).Result;
-                    foreach (var item in list)
-                    {
-                        //todo:具体实现
-                    }
                     //原图
                     using (var image = new MagickImage(imgPaths[k]))
                     {
@@ -122,9 +202,17 @@ namespace WaterWaterWaterMark
                     Directory.CreateDirectory(savePath);
                 }
                 #endregion
-                var task = Task.Run(() => SetWaterMark(files, path, savePath));
-                var result = MessageBox.Show(string.Format("总共识别出 {0} 张图片，操作进行中~~~", files.Length), "逆天友情提醒~~~是否打开目录？", MessageBoxButton.YesNo);
+                var result = MessageBox.Show(string.Format("总共识别出 {0} 张图片，操作进行中~~~\n\n是否人脸识别？（请节约使用，每个月使用次数都是有限的）\n\n你可以先去做其他事情，一会再来看看~（人脸识别比较慢）", files.Length), "逆天友情提醒~~~没有人物的就不要人脸识别了！", MessageBoxButton.YesNoCancel);
+                //人脸识别
                 if (result == MessageBoxResult.Yes)
+                {
+                    Task.Factory.StartNew(() => SetWaterMarkFace(files, path, savePath));
+                }
+                else if (result == MessageBoxResult.No)
+                {
+                    Task.Factory.StartNew(() => SetWaterMark(files, path, savePath));
+                }
+                if (result != MessageBoxResult.Cancel)
                 {
                     Process.Start("explorer.exe ", savePath);//打开保存后的路径
                     //MessageBox.Show($"简化版本不能打开文件夹，请手动打开路径：\n{savePath}", "360误报提醒");

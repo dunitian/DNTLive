@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 /// <summary>
 /// 作者：dunitian
-/// 时间：2016年12月23日 10:40
+/// 时间：2016年12月26日 06:40
 /// 标题：Json序列化和反序列化工具类
 /// </summary>
 public static partial class JsonHelper
