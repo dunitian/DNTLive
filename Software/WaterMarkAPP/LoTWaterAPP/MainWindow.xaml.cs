@@ -262,7 +262,7 @@ namespace WaterWaterWaterMark
                                 File.AppendAllText("Images/dnt.log", ex.ToString());
                             }
                         }
-                        if (t.IsCompleted)
+                        else if (t.IsCompleted && !t.IsCanceled)
                         {
                             MessageBox.Show("thum目录是缩略图，可以直接删了\n\nface目录是识别出来的人脸，可以看看再删", "我已经完成了，您老看看呗~");
                         }
@@ -272,7 +272,7 @@ namespace WaterWaterWaterMark
                 {
                     Task.Run(() => SetWaterMark(files, path, savePath));
                 }
-                if (result != MessageBoxResult.Cancel)
+                else if (result != MessageBoxResult.Cancel)
                 {
                     Process.Start("explorer.exe ", savePath);//打开保存后的路径
                     //MessageBox.Show($"简化版本不能打开文件夹，请手动打开路径：\n{savePath}", "360误报提醒");
