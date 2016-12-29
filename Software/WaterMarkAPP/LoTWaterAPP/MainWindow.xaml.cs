@@ -73,8 +73,11 @@ namespace WaterWaterWaterMark
                     #region 单个水印图
                     using (var waterimg = new MagickImage(waterImgPath))
                     {
-                        int smallWidth = waterimg.Width;
-                        int smallHeight = waterimg.Height;
+                        //要求把水印稀疏下
+                        int smallWidth = waterimg.Width * 2;
+                        int smallHeight = waterimg.Height * 2;
+                        //int smallWidth = waterimg.Width;
+                        //int smallHeight = waterimg.Height;
 
                         int x = Convert.ToInt32(Math.Ceiling(imgWidth * 1.0 / smallWidth));
                         int y = Convert.ToInt32(Math.Ceiling(imgHeight * 1.0 / smallHeight));
@@ -158,14 +161,18 @@ namespace WaterWaterWaterMark
                     //原图
                     using (var image = new MagickImage(imgPaths[k]))
                     {
+                        //让水印图片没那么密集
                         int imgWidth = image.Width;
                         int imgHeight = image.Height;
 
                         //单个水印图
                         using (var waterimg = new MagickImage(waterImgPath))
                         {
-                            int smallWidth = waterimg.Width;
-                            int smallHeight = waterimg.Height;
+                            //要求把水印稀疏下
+                            int smallWidth = waterimg.Width * 2;
+                            int smallHeight = waterimg.Height * 2;
+                            //int smallWidth = waterimg.Width;
+                            //int smallHeight = waterimg.Height;
 
                             int x = Convert.ToInt32(Math.Ceiling(imgWidth * 1.0 / smallWidth));
                             int y = Convert.ToInt32(Math.Ceiling(imgHeight * 1.0 / smallHeight));
@@ -272,7 +279,8 @@ namespace WaterWaterWaterMark
                 {
                     Task.Run(() => SetWaterMark(files, path, savePath));
                 }
-                else if (result != MessageBoxResult.Cancel)
+
+                if (result != MessageBoxResult.Cancel)
                 {
                     Process.Start("explorer.exe ", savePath);//打开保存后的路径
                     //MessageBox.Show($"简化版本不能打开文件夹，请手动打开路径：\n{savePath}", "360误报提醒");
