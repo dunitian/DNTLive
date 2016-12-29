@@ -28,8 +28,8 @@ namespace WaterWaterWaterMark
             initConfig();//初始化
 
         }
-        #region 公用方法
 
+        #region 公用方法
         #region 人脸识别-水印
         /// <summary>
         /// 设置水印--识别人脸
@@ -73,7 +73,7 @@ namespace WaterWaterWaterMark
                     #region 单个水印图
                     using (var waterimg = new MagickImage(waterImgPath))
                     {
-                        //要求把水印稀疏下
+                        //todo:要求把水印稀疏下
                         int smallWidth = waterimg.Width * 2;
                         int smallHeight = waterimg.Height * 2;
                         //int smallWidth = waterimg.Width;
@@ -161,7 +161,7 @@ namespace WaterWaterWaterMark
                     //原图
                     using (var image = new MagickImage(imgPaths[k]))
                     {
-                        //让水印图片没那么密集
+                        //todo:让水印图片没那么密集
                         int imgWidth = image.Width;
                         int imgHeight = image.Height;
 
